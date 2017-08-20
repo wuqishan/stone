@@ -14,3 +14,18 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('test', 'TestController@index');
+
+
+
+
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin/'], function () {
+
+    Route::get('index', 'IndexController@index')->name('admin.index');
+
+    Route::get('main', 'IndexController@main')->name('admin.main');
+
+    Route::resource('image', 'ImageController');
+});
+
