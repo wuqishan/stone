@@ -24,17 +24,17 @@ var navs = [{
 		"href": "auxiliar.html"
 	}]
 }, {
-    "title": "图片管理",
+    "title": "商品管理",
     "icon": "fa-cubes",
     "spread": true,
     "children": [{
-        "title": "图片列表",
+        "title": "商品列表",
         "icon": "&#xe641;",
-        "href": "/admin/image"
+        "href": "/admin/goods"
     }, {
-        "title": "图片上传",
+        "title": "添加商品",
         "icon": "&#xe63c;",
-        "href": "/admin/image/create"
+        "href": "/admin/goods/create"
     }]
 }, {
 	"title": "组件",

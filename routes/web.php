@@ -27,5 +27,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin/'], function () {
     Route::get('main', 'IndexController@main')->name('admin.main');
 
     Route::resource('image', 'ImageController');
+
+    Route::resource('goods', 'GoodsController');
 });
 
