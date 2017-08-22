@@ -10,11 +10,11 @@
         <legend>商品添加</legend>
     </fieldset>
 
-    <form class="layui-form layui-form-pane" action="">
+    <form class="layui-form layui-form-pane" action="{{ route('goods.store') }}">
         <div class="layui-form-item">
             <label class="layui-form-label">商品名称</label>
             <div class="layui-input-block">
-                <input type="text" name="title" placeholder="请输入商品名称" class="layui-input">
+                <input type="text" name="name" placeholder="请输入商品名称" lay-verify="name" class="layui-input">
             </div>
         </div>
 
@@ -45,12 +45,8 @@
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">重量(kg)</label>
-                <div class="layui-input-inline" style="width: 100px;">
-                    <input type="text" name="weight_min" placeholder="千克" class="layui-input">
-                </div>
-                <div class="layui-form-mid">-</div>
-                <div class="layui-input-inline" style="width: 100px;">
-                    <input type="text" name="weight_max" placeholder="千克" class="layui-input">
+                <div class="layui-input-inline">
+                    <input type="text" name="weight" placeholder="千克" class="layui-input">
                 </div>
             </div>
         </div>
@@ -58,32 +54,30 @@
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">价格(￥)</label>
-                <div class="layui-input-inline" style="width: 100px;">
-                    <input type="text" name="price_min" placeholder="元" class="layui-input">
-                </div>
-                <div class="layui-form-mid">-</div>
-                <div class="layui-input-inline" style="width: 100px;">
-                    <input type="text" name="price_max" placeholder="元" class="layui-input">
+                <div class="layui-input-inline">
+                    <input type="text" name="price" placeholder="元" lay-verify="price" class="layui-input">
                 </div>
             </div>
         </div>
 
         <div class="layui-upload">
-            <button type="button" class="layui-btn" id="test2">多图片上传</button>
+            <input type="file" value="" id="upload" multiple>
             <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
                 预览图：
-                <div class="layui-upload-list" id="demo2"></div>
+                <div class="layui-upload-list" id="preview"></div>
             </blockquote>
         </div>
 
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">简介</label>
             <div class="layui-input-block">
-                <textarea placeholder="请输入简单介绍" class="layui-textarea"></textarea>
+                <textarea name="introduce" placeholder="请输入简单介绍" class="layui-textarea"></textarea>
             </div>
         </div>
+        <input type="hidden" name="image_id" lay-verify="image_id" value="1">
+        {{ csrf_field() }}
         <div class="layui-form-item">
-            <button class="layui-btn" lay-submit="" lay-filter="demo2">提 交</button>
+            <button class="layui-btn" lay-submit lay-filter="addGoods">提 交</button>
         </div>
     </form>
 </div>
@@ -99,29 +93,47 @@
 
 
             layui.upload({
-
+                elem: '#upload',
+                url: '/upload/',
+                ext:'txt',
+                title: '选择图片上传',
+                multiple: true,
+                before: function(input){
+                    console.log('文件上传中');
+                },
+                success: function(res){
+                    console.log('上传完毕');
+                },
+                error: function (a) {
+                    console.log(a);
+                }
             });
-            //多图片上传
-//            upload.upload({
-//                elem: '#test2'
-//                ,url: '/upload/'
-//                ,multiple: true
-//                ,before: function(obj){
-//                    //预读本地文件示例，不支持ie8
-//                    obj.preview(function(index, file, result){
-//                        $('#demo2').append('<img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img">')
-//                    });
-//                }
-//                ,done: function(res){
-//                    //上传完毕
-//                }
-//            });
-
+            form.verify({
+                name: function(value, item){ //value：表单的值、item：表单的DOM对象
+                    if (value === '' || $.trim(value) === '') {
+                        return '商品名称不能为空';
+                    }
+                },
+                price: function(value, item){ //value：表单的值、item：表单的DOM对象
+                    if (value === '' || $.trim(value) === '') {
+                        return '商品价格不能为空';
+                    }
+                },
+                image_id: function(value, item){ //value：表单的值、item：表单的DOM对象
+                    if (value === '' || $.trim(value) === '') {
+                        return '商品图片不能为空';
+                    }
+                }
+            });
             //监听提交
-            form.on('submit(demo2)', function (data) {
-                layer.alert(JSON.stringify(data.field), {
-                    title: '最终的提交信息'
-                })
+            form.on('submit(addGoods)', function (data) {
+                console.log(data.field);
+                $.post("{{ route('goods.store') }}", data.field, function (res) {
+                    console.log(res);
+                    layer.msg('添加成功', {time:1000}, function(){
+//                        location.reload();
+                    });
+                });
                 return false;
             });
         });
