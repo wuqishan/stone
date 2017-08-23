@@ -15,10 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('test', 'TestController@index');
-
-
-
 
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin/'], function () {
 
@@ -26,7 +22,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin/'], function () {
 
     Route::get('main', 'IndexController@main')->name('admin.main');
 
-    Route::resource('image', 'ImageController');
+    Route::post('image', 'ImageController@upload')->name('admin.image.upload');
+    Route::get('image/delete/{id}', 'ImageController@delete')->name('admin.image.delete');
 
     Route::resource('goods', 'GoodsController');
 });
