@@ -1,35 +1,60 @@
-/** tab.js By Beginner Emain:zheng_jinfan@126.com HomePage:http://www.zhengjinfan.cn */
+/** func.js 工具js */
+
 var func;
+
 layui.define(['jquery'], function(exports) {
 
     var $ = layui.jquery,
-        Func = function() {};
+        Func = function() { };
+
     /**
-     * 初始化
+     * 修改当前上传的图片ID
+     *
+     * @param obj
+     * @param changeIds
+     * @param type
      */
-    Func.prototype.modifyImgId = function(obj, addImgId) {
-        var newImgIds
-        if (obj.val() == '') {
-            newImgIds = addImgId.join(',')
+    Func.prototype.modifyImgId = function(obj, changeIds, type)
+    {
+        var newImgIds;
+        var originIds = obj.val();
+        if (type === 'add') {
+            if (obj.val() === '') {
+                newImgIds = changeIds.join(',')
+            } else {
+                newImgIds = changeIds.join(',') + ',' + originIds;
+            }
         } else {
-            newImgIds = addImgId.join(',') + ',' + obj.val();
+            originIds = originIds.split(',');
+            $.each(originIds, function(i, v) {
+                if (v === changeIds) {
+                    originIds.splice(i, 1);
+                }
+            });
+
+            newImgIds = originIds.join(',');
         }
+
 
         obj.val(newImgIds);
     };
+
     /**
-     * 查询tab是否存在，如果存在则返回索引值，不存在返回-1
-     * @param {String} 标题
+     * 删除已经上传的图片
+     *
+     * @param id
      */
-    Func.prototype.delImg = function(id) {
+    Func.prototype.delImg = function(id)
+    {
         $.get('/admin/image/delete/'+id, function(res){
-            console.log(res);
+            if (res.code === 0) {
+                $('#upload-'+id).remove();
+                Func.prototype.modifyImgId($('#image_id'), id, 'del');
+            }
         });
     };
 
-    Func.prototype.aaa = function() {
-        alert(44)
-    };
+
 
     func = new Func();
 });

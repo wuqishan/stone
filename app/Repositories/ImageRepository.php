@@ -16,4 +16,9 @@ class ImageRepository extends Repository
 
         return $result;
     }
+
+    public function delete($id)
+    {
+        return Images::destroy($id);
+    }
 }

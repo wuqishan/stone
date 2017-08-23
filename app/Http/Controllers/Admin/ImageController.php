@@ -12,29 +12,34 @@ class ImageController extends Controller
 
     public function upload(Request $request, ImageRepository $imageRepository)
     {
-        $result = ['code' => 0, 'msg' => '', 'data' => []];
-
         if($request->hasFile('images')){
             $data = [];
             foreach ($request->file('images') as $img) {
-                $temp['origin_name'] = $img -> getClientOriginalName();
-                $temp['ext'] = $img -> getClientOriginalExtension();
-                $mimeTye = $img -> getMimeType();
+                $temp['origin_name'] = $img->getClientOriginalName();
+                $temp['ext'] = $img->getClientOriginalExtension();
+                $mimeTye = $img->getMimeType();
                 $removeName = $this->getUniqueName() . '.' . $temp['ext'];
-                $img -> move(self::FILE_IMG_DIR, $removeName);
+                $img->move(self::FILE_IMG_DIR, $removeName);
                 $temp['size'] = $img->getSize();
                 $temp['path'] = self::FILE_IMG_DIR . $removeName;
 
                 $data[] = $temp;
             }
-            $result['data'] = $imageRepository->addImage($data);
+            $this->result['data'] = $imageRepository->addImage($data);
         }
 
-        return response()->json($result);
+        return response()->json($this->result);
     }
 
-    public function delete(Request $request)
+    public function delete(Request $request, ImageRepository $imageRepository)
     {
-//        $id = $request
+
+        $id = intval($request->id);
+
+        if ($id <= 0 || ! $imageRepository->delete($id)) {
+            $this->result['code'] = 1;
+        }
+
+        return response()->json($this->result);
     }
 }

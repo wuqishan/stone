@@ -11,6 +11,8 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    protected $result = ['code' => 0, 'msg' => '', 'data' => []];
+
     protected function getUniqueName()
     {
         return date('Ymd').md5(uniqid());

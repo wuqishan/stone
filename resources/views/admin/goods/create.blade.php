@@ -22,7 +22,7 @@
             <div class="layui-form-item" pane="">
                 <label class="layui-form-label">是否显示</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" checked="" name="show" lay-skin="switch" lay-filter="switchTest">
+                    <input type="checkbox" checked="" name="show" lay-skin="switch" lay-text="是|否">
                 </div>
             </div>
 
@@ -94,7 +94,7 @@
             var form = layui.form(),
                 layer = layui.layer,
                 $ = layui.jquery;
-
+            var loading;
             layui.upload({
                 elem: '#upload',
                 url: "{{ route('admin.image.upload', ['_token' => csrf_token()]) }}",
@@ -102,7 +102,7 @@
                 title: '选择图片上传',
                 multiple: true,
                 before: function (input) {
-                    console.log('文件上传中');
+                    loading = layer.load(1, {shade: [0.1,'#000']});
                 },
                 success: function (res) {
                     var addImgId = [];
@@ -112,7 +112,9 @@
                         $('#img-list').append(tr);
                         addImgId.push(v.img_id);
                     });
-                    func.modifyImgId($('#image_id'), addImgId);
+                    func.modifyImgId($('#image_id'), addImgId, 'add');
+
+                    layer.close(loading);
                 }
             });
             form.verify({
@@ -134,13 +136,18 @@
             });
             //监听提交
             form.on('submit(addGoods)', function (data) {
-                console.log(data.field);
                 $.post("{{ route('goods.store') }}", data.field, function (res) {
-                    console.log(res);
-                    layer.msg('添加成功', {time: 1000}, function () {
-//                        location.reload();
+                    var msg = '';
+                    if (res.code === 0) {
+                        msg = '添加成功';
+                    } else {
+                        msg = '添加失败';
+                    }
+                    layer.msg(msg, {time: 1000}, function () {
+                        location.reload();
                     });
                 });
+
                 return false;
             });
         });
