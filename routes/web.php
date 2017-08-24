@@ -25,6 +25,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin/'], function () {
     Route::post('image', 'ImageController@upload')->name('admin.image.upload');
     Route::get('image/delete/{id}', 'ImageController@delete')->name('admin.image.delete');
 
-    Route::resource('goods', 'GoodsController');
+    Route::get('goods/index', 'GoodsController@index')->name('goods.index');
+
+//    Route::post('goods', 'GoodsController@store')->name('goods.store');
+
+//    Route::resource('goods', 'GoodsController');
 });
 

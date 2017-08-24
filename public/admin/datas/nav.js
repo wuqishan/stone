@@ -30,7 +30,7 @@ var navs = [{
     "children": [{
         "title": "商品列表",
         "icon": "&#xe641;",
-        "href": "/admin/goods"
+        "href": "/admin/goods/index"
     }, {
         "title": "添加商品",
         "icon": "&#xe63c;",

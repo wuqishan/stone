@@ -6,6 +6,14 @@ use App\Model\Goods;
 
 class GoodsRepository extends Repository
 {
+    public function page($pageIndex, $pageSize)
+    {
+        $result['list'] = Goods::where([])->offset(($pageIndex - 1) * $pageSize)->limit($pageSize)->get()->toArray();
+        $result['count'] = Goods::where([])->count();
+
+        return $result;
+    }
+
     /**
      * 添加商品
      *

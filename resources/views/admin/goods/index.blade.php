@@ -34,8 +34,10 @@
                 <thead>
                 <tr>
                     <th style="width: 30px;"><input type="checkbox" lay-filter="allselector" lay-skin="primary"></th>
-                    <th>姓名</th>
-                    <th>年龄</th>
+                    <th>名称</th>
+                    <th>长/宽/高 (cm)</th>
+                    <th>重量 (kg)</th>
+                    <th>价格 (￥)</th>
                     <th>创建时间</th>
                     <th>操作</th>
                 </tr>
@@ -56,10 +58,12 @@
     <script type="text/html" id="tpl">
         @{{# layui.each(d.list, function(index, item){ }}
         <tr>
-            <td><input type="checkbox" lay-skin="primary"></td>
+            <td><input type="checkbox" value="@{{ item.id }}" lay-skin="primary"></td>
             <td>@{{ item.name }}</td>
-            <td>@{{ item.age }}</td>
-            <td>@{{ item.createtime }}</td>
+            <td>@{{ item.length }} / @{{ item.width }} / @{{ item.height }}</td>
+            <td>@{{ item.weight }}</td>
+            <td>@{{ item.price }}</td>
+            <td>@{{ item.created_at }}</td>
             <td>
                 <a href="/detail-1" target="_blank" class="layui-btn layui-btn-normal layui-btn-mini">预览</a>
                 <a href="javascript:;" data-name="@{{ item.name }}" data-opt="edit" class="layui-btn layui-btn-mini">编辑</a>
@@ -71,9 +75,8 @@
     @parent
     <script>
         layui.config({
-            base: 'js/'
+            base: '/admin/js/'
         });
-
         layui.use(['paging', 'form'], function() {
             var $ = layui.jquery,
                 paging = layui.paging(),
@@ -82,7 +85,7 @@
                 form = layui.form();
 
             paging.init({
-                url: '/admin/datas/laytpl_laypage_data.json', //地址
+                url: '{{ route("goods.index") }}', //地址
                 elem: '#content', //内容容器
                 params: { //发送到服务端的参数
                 },
@@ -119,9 +122,7 @@
                         $that.children('td:last-child').children('a[data-opt=edit]').on('click', function() {
                             layer.msg($(this).data('name'));
                         });
-
                     });
-
                 },
             });
             //获取所有选择的列

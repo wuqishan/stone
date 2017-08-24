@@ -10,9 +10,19 @@ use App\Repositories\GoodsImageRepository;
 
 class GoodsController extends Controller
 {
-    public function index()
+    public function index(Request $request, GoodsRepository $goodsRepository)
     {
+        if ($request->ajax()) {
+
+            $pageIndex = $request->input('pageIndex', 1);
+            $pageSize = $request->input('pageSize', 10);
+            $this->result = $goodsRepository->page($pageIndex, $pageSize) + $this->result;
+
+            return response()->json($this->result);
+        }
+
         return view('admin.goods.index');
+
     }
 
     public function create()
@@ -63,8 +73,4 @@ class GoodsController extends Controller
         return response()->json($this->result);
     }
 
-    public function destroy()
-    {
-
-    }
 }
