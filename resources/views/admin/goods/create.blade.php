@@ -11,7 +11,7 @@
             <legend>商品添加</legend>
         </fieldset>
 
-        <form class="layui-form layui-form-pane" action="{{ route('goods.store') }}">
+        <form class="layui-form layui-form-pane" action="">
             <div class="layui-form-item">
                 <label class="layui-form-label">商品名称</label>
                 <div class="layui-input-block">
@@ -136,7 +136,7 @@
             });
             //监听提交
             form.on('submit(addGoods)', function (data) {
-                $.post("{{ route('goods.store') }}", data.field, function (res) {
+                $.post("", data.field, function (res) {
                     var msg = '';
                     if (res.code === 0) {
                         msg = '添加成功';

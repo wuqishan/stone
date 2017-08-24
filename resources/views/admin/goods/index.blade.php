@@ -2,6 +2,7 @@
 
 @section('css')
     @parent
+    <link rel="stylesheet" href="{{ asset('admin/css/main.css') }}"/>
     <link rel="stylesheet" href="{{ asset('admin/css/global.css') }}" media="all">
     <link rel="stylesheet" href="{{ asset('admin/css/table.css') }}" />
 @endsection
@@ -52,6 +53,22 @@
         </div>
     </div>
 </div>
+<script type="text/html" id="uploadTpl">
+    <div class="layui-upload">
+        <div class="layui-box layui-upload-button">
+            <form target="layui-upload-iframe" method="post" key="set-mine" enctype="multipart/form-data">
+                <input type="file" name="images[]" value="" id="upload-images" multiple="">
+            </form>
+            <span class="layui-upload-icon"><i class="layui-icon"></i>选择图片上传</span>
+        </div>
+        <div class="layui-upload-list">
+            <table class="layui-table">
+                <thead><tr><th>文件名</th><th>大小(bytes)</th><th>操作</th></tr></thead>
+                <tbody id="img-list"></tbody>
+            </table>
+        </div>
+    </div>
+</script>
 @endsection
 @section('js')
     <!--模板-->
@@ -65,7 +82,8 @@
             <td>@{{ item.price }}</td>
             <td>@{{ item.created_at }}</td>
             <td>
-                <a href="/detail-1" target="_blank" class="layui-btn layui-btn-normal layui-btn-mini">预览</a>
+                <button data-id="@{{ item.id }}" class="layui-btn layui-btn-mini add-images"><i class="layui-icon">&#xe64a;</i> 添加图片</button>
+                <button target="_blank" class="layui-btn layui-btn-normal layui-btn-mini">预览</button>
                 <a href="javascript:;" data-name="@{{ item.name }}" data-opt="edit" class="layui-btn layui-btn-mini">编辑</a>
                 <a href="javascript:;" data-id="1" data-opt="del" class="layui-btn layui-btn-danger layui-btn-mini">删除</a>
             </td>
@@ -73,11 +91,12 @@
         @{{# }); }}
     </script>
     @parent
+    <script type="text/javascript" src="{{ asset('admin/js/func.js') }}"></script>
     <script>
         layui.config({
             base: '/admin/js/'
         });
-        layui.use(['paging', 'form'], function() {
+        layui.use(['paging', 'form', 'upload'], function() {
             var $ = layui.jquery,
                 paging = layui.paging(),
                 layerTips = parent.layer === undefined ? layui.layer : parent.layer, //获取父窗口的layer对象
@@ -143,6 +162,29 @@
                 parent.layer.alert('你点击了搜索按钮')
             });
 
+
+
+            $(document).on('click', '.add-images', function() {
+
+                var goodsId = $(this).attr('data-id');
+
+                func.showUploadPanel();
+
+                layui.upload({
+                    elem: '#upload-images',
+                    url: "{{ route('admin.image.upload', ['_token' => csrf_token()]) }}&goods_id="+goodsId,
+                    ext: 'jpg|jpeg|png|gif',
+                    title: '选择图片上传',
+                    multiple: true,
+                    before: function (input) {
+                        loading = layer.load(1, {shade: [0.1,'#000']});
+                    },
+                    success: function (res) {
+                        func.showTr(res.data, goodsId);
+                        layer.close(loading);
+                    }
+                });
+            });
         });
     </script>
 @endsection

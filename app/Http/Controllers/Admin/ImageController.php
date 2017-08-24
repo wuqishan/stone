@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\ImageRepository;
+use App\Repositories\GoodsImageRepository;
 
 class ImageController extends Controller
 {
     const FILE_IMG_DIR = 'storage/uploads/images/';
-    const FILE_TMP_DIR = 'storage/uploads/temp/';
 
     /**
-     * 图片上传，这里是先上传到零时目录，等点击添加商品按钮再把图片转移到正式目录并修改数据库
+     * 图片上传
      *
      * @param Request $request
      * @param ImageRepository $imageRepository
@@ -20,6 +20,7 @@ class ImageController extends Controller
      */
     public function upload(Request $request, ImageRepository $imageRepository)
     {
+        $goodsId = intval($request->input('goods_id'));
         if($request->hasFile('images')){
             $data = [];
             foreach ($request->file('images') as $img) {
@@ -27,13 +28,13 @@ class ImageController extends Controller
                 $temp['ext'] = $img->getClientOriginalExtension();
                 $mimeTye = $img->getMimeType();
                 $removeName = $this->getUniqueName() . '.' . $temp['ext'];
-                $img->move(self::FILE_TMP_DIR, $removeName);
+                $img->move(self::FILE_IMG_DIR, $removeName);
                 $temp['size'] = $img->getSize();
-                $temp['path'] = self::FILE_TMP_DIR . $removeName;
+                $temp['path'] = self::FILE_IMG_DIR . $removeName;
 
                 $data[] = $temp;
             }
-            $this->result['data'] = $imageRepository->addImage($data);
+            $this->result['data'] = $imageRepository->addImage($data, $goodsId);
         }
 
         return response()->json($this->result);
@@ -46,10 +47,22 @@ class ImageController extends Controller
      * @param ImageRepository $imageRepository
      * @return \Illuminate\Http\JsonResponse
      */
-    public function delete(Request $request, ImageRepository $imageRepository)
+    public function delete(Request $request, ImageRepository $imageRepository, GoodsImageRepository $goodsImageRepository)
     {
-        $id = intval($request->id);
-        if ($id <= 0 || ! $imageRepository->delete($id)) {
+        $goodsId = intval($request->goods_id);
+        $imageId = intval($request->image_id);
+        if ($goodsId <= 0 || ! $imageRepository->delete($imageId) || ! $goodsImageRepository->delete($goodsId, $imageId)) {
+            $this->result['code'] = 1;
+        }
+
+        return response()->json($this->result);
+    }
+
+    public function getImagesByGoogsId(Request $request, ImageRepository $imageRepository, GoodsImageRepository $goodsImageRepository)
+    {
+        $goodsId = intval($request->goods_id);
+        $imageId = $goodsImageRepository->getImagesId($goodsId);
+        if ($goodsId <= 0 || ! $imageRepository->getImages($imageId)) {
             $this->result['code'] = 1;
         }
 

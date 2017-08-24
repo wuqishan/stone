@@ -26,4 +26,16 @@ class GoodsImageRepository extends Repository
 
         return $result;
     }
+
+    public function delete($goodsId, $imageId)
+    {
+        return GoodsImages::where(['goods_id' => $goodsId, 'images_id' => $imageId])->delete();
+    }
+
+    public function getImagesId($goodsId)
+    {
+        // 获取imagesId
+
+        return ;
+    }
 }

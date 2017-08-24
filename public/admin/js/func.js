@@ -2,42 +2,46 @@
 
 var func;
 
-layui.define(['jquery'], function(exports) {
+layui.define(['jquery', 'layer'], function(exports) {
 
     var $ = layui.jquery,
         layer = layui.layer,
-        Func = function() { };
+        Func = function() {};
 
     /**
-     * 修改当前上传的图片ID
+     * 显示图片上传panel
      *
-     * @param obj
-     * @param changeIds
-     * @param type
+     * @param id
      */
-    Func.prototype.modifyImgId = function(obj, changeIds, type)
+    Func.prototype.showUploadPanel = function(goodsId)
     {
-        var newImgIds;
-        var originIds = obj.val();
-        if (type === 'add') {
-            if (obj.val() === '') {
-                newImgIds = changeIds.join(',')
-            } else {
-                newImgIds = changeIds.join(',') + ',' + originIds;
+        // 显示窗口
+        layer.open({
+            type: 1,
+            skin: 'layui-layer-rim', //加上边框
+            area: ['800px', '500px'], //宽高
+            content: $('#uploadTpl').html()
+        });
+        // 获取初始化的图片数据
+        $.get('/admin/image/'+goodsId, function(res){
+            if (res.code === 0) {
+                // 显示
             }
-        } else {
-            originIds = originIds.split(',');
-            $.each(originIds, function(i, v) {
-                if (v === changeIds) {
-                    originIds.splice(i, 1);
-                }
-            });
+        });
+    };
 
-            newImgIds = originIds.join(',');
-        }
-
-
-        obj.val(newImgIds);
+    /**
+     * 显示图片列表Tr
+     *
+     * @param id
+     */
+    Func.prototype.showTr = function(data, goodsId)
+    {
+        $.each(data, function (i, v) {
+            var tr = '<tr id="upload-'+v.img_id+'"><td>'+v.origin_name+'</td><td>'+v.size+'</td>'+
+                '<td><a href="javascript:func.delImg('+goodsId+', '+v.img_id+')" class="layui-btn layui-btn-mini layui-btn-danger">删除</a></td></tr>';
+            $('#img-list').append(tr);
+        });
     };
 
     /**
@@ -45,12 +49,11 @@ layui.define(['jquery'], function(exports) {
      *
      * @param id
      */
-    Func.prototype.delImg = function(id)
+    Func.prototype.delImg = function(goods_id, image_id)
     {
-        $.get('/admin/image/delete/'+id, function(res){
+        $.get('/admin/image/delete/'+goods_id+'/'+image_id, function(res){
             if (res.code === 0) {
-                $('#upload-'+id).remove();
-                Func.prototype.modifyImgId($('#image_id'), id, 'del');
+                $('#upload-'+image_id).remove();
             }
         });
     };
