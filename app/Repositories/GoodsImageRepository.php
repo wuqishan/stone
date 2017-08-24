@@ -6,6 +6,13 @@ use App\Model\GoodsImages;
 
 class GoodsImageRepository extends Repository
 {
+    /**
+     * 添加商品与商品图片的关联关系
+     *
+     * @param $goodsId
+     * @param $imgIds
+     * @return bool
+     */
     public function addGoodsImagesRelative($goodsId, $imgIds)
     {
         $result = true;

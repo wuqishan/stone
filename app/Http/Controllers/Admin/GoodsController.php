@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\GoodsRepository;
+use App\Repositories\ImageRepository;
 use App\Repositories\GoodsImageRepository;
 
 class GoodsController extends Controller
@@ -19,7 +20,21 @@ class GoodsController extends Controller
         return view('admin.goods.create');
     }
 
-    public function store(Request $request, GoodsRepository $goodsRepository, GoodsImageRepository $goodsImageRepository)
+    /**
+     * 添加商品，首先是异步上传零时商品图片，等商品正确添加后再把零时图片转移到正式目录同时修改数据库
+     *
+     * @param Request $request
+     * @param GoodsRepository $goodsRepository
+     * @param ImageRepository $imageRepository
+     * @param GoodsImageRepository $goodsImageRepository
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store(
+        Request $request,
+        GoodsRepository $goodsRepository,
+        ImageRepository $imageRepository,
+        GoodsImageRepository $goodsImageRepository
+    )
     {
         $data = [];
         $data['name'] = strip_tags($request->input('name'));
@@ -37,6 +52,9 @@ class GoodsController extends Controller
             if (! $goodsImageRepository->addGoodsImagesRelative($goodsId, $imgIds)) {
                 $goodsRepository->destroy($goodsId);
                 $this->result['code'] = 1;
+            } else {
+                // 更新图片位置及数据库
+                $imageRepository->modifyFromTemp($imgIds);
             }
         } else {
             $this->result['code'] = 1;

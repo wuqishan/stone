@@ -144,7 +144,7 @@
                         msg = '添加失败';
                     }
                     layer.msg(msg, {time: 1000}, function () {
-                        location.reload();
+                        //location.reload();
                     });
                 });
 

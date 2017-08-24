@@ -5,6 +5,7 @@ var func;
 layui.define(['jquery'], function(exports) {
 
     var $ = layui.jquery,
+        layer = layui.layer,
         Func = function() { };
 
     /**
