@@ -91,7 +91,7 @@
         @{{# }); }}
     </script>
     @parent
-    <script type="text/javascript" src="{{ asset('admin/js/func.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('admin/js/func.js') }}?v=1"></script>
     <script>
         layui.config({
             base: '/admin/js/'
@@ -162,13 +162,11 @@
                 parent.layer.alert('你点击了搜索按钮')
             });
 
-
-
             $(document).on('click', '.add-images', function() {
-
+                // 获取商品id
                 var goodsId = $(this).attr('data-id');
-
-                func.showUploadPanel();
+                // 显示商品图片的panel
+                func.showUploadPanel(goodsId);
 
                 layui.upload({
                     elem: '#upload-images',

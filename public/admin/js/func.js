@@ -17,16 +17,20 @@ layui.define(['jquery', 'layer'], function(exports) {
     {
         // 显示窗口
         layer.open({
+            title: '上传商品图片列表',
             type: 1,
             skin: 'layui-layer-rim', //加上边框
-            area: ['800px', '500px'], //宽高
+            area: ['800px', '380px'], //宽高
             content: $('#uploadTpl').html()
         });
+
+        var loading = layer.load(1, {shade: [0.1,'#000']});
         // 获取初始化的图片数据
         $.get('/admin/image/'+goodsId, function(res){
             if (res.code === 0) {
-                // 显示
+                Func.prototype.showTr(res.data, goodsId);
             }
+            layer.close(loading);
         });
     };
 
@@ -38,8 +42,8 @@ layui.define(['jquery', 'layer'], function(exports) {
     Func.prototype.showTr = function(data, goodsId)
     {
         $.each(data, function (i, v) {
-            var tr = '<tr id="upload-'+v.img_id+'"><td>'+v.origin_name+'</td><td>'+v.size+'</td>'+
-                '<td><a href="javascript:func.delImg('+goodsId+', '+v.img_id+')" class="layui-btn layui-btn-mini layui-btn-danger">删除</a></td></tr>';
+            var tr = '<tr id="upload-'+v.id+'"><td>'+v.origin_name+'</td><td>'+v.size+'</td>'+
+                '<td><a href="javascript:func.delImg('+goodsId+', '+v.id+')" class="layui-btn layui-btn-mini layui-btn-danger">删除</a></td></tr>';
             $('#img-list').append(tr);
         });
     };

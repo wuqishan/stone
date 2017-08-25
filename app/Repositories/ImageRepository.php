@@ -17,10 +17,10 @@ class ImageRepository extends Repository
     {
         $result = [];
         foreach ($data as $v) {
-            $v['img_id'] = Images::create($v)->id;
+            $v['id'] = Images::create($v)->id;
             $result[] = $v;
 
-            GoodsImages::create(['goods_id' => $goodsId, 'images_id' => $v['img_id']]);
+            GoodsImages::create(['goods_id' => $goodsId, 'images_id' => $v['id']]);
         }
 
         return $result;
@@ -34,12 +34,13 @@ class ImageRepository extends Repository
      */
     public function delete($id)
     {
+        @unlink(base_path() . '/public/' . Images::find($id)->path);
         return Images::destroy($id);
     }
 
 
-    public function getImagesByGoogsId($goodsId)
+    public function getImages($imagesId)
     {
-        return Images::where(['id' => $goodsId])->get();
+        return Images::whereIn('id', $imagesId)->get()->toArray();
     }
 }

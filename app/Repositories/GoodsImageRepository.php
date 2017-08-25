@@ -34,8 +34,8 @@ class GoodsImageRepository extends Repository
 
     public function getImagesId($goodsId)
     {
-        // 获取imagesId
+        $images = GoodsImages::where(['goods_id' => $goodsId])->get(['images_id'])->toArray();
 
-        return ;
+        return array_column($images, 'images_id');
     }
 }

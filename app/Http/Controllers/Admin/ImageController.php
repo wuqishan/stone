@@ -62,7 +62,9 @@ class ImageController extends Controller
     {
         $goodsId = intval($request->goods_id);
         $imageId = $goodsImageRepository->getImagesId($goodsId);
-        if ($goodsId <= 0 || ! $imageRepository->getImages($imageId)) {
+        $this->result['data'] = $imageRepository->getImages($imageId);
+
+        if ($goodsId <= 0 || ! $this->result['data']) {
             $this->result['code'] = 1;
         }
 
