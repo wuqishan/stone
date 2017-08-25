@@ -144,7 +144,7 @@ layui.define(['layer', 'laypage', 'laytpl'], function(exports) {
 								}
 							}
 						};
-						$.extend(defaults, _pageConfig); //参数合并
+                        $.extend(defaults, _pageConfig); //参数合并
 						layui.laypage(defaults);
 					}
 					if(_config.success) {

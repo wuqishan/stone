@@ -29,7 +29,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin/'], function () {
     Route::get('goods/index', 'GoodsController@index')->name('goods.index');
     Route::get('goods/create', 'GoodsController@create')->name('goods.create');
 
-//    Route::post('goods', 'GoodsController@store')->name('goods.store');
+    Route::post('goods', 'GoodsController@store')->name('goods.store');
 
 //    Route::resource('goods', 'GoodsController');
 });

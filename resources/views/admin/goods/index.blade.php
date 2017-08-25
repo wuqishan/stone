@@ -12,21 +12,37 @@
 <div class="admin-main">
 
     <blockquote class="layui-elem-quote">
-        <a href="javascript:;" class="layui-btn layui-btn-small" id="add">
-            <i class="layui-icon">&#xe608;</i> 添加信息
-        </a>
-        <a href="#" class="layui-btn layui-btn-small" id="import">
-            <i class="layui-icon">&#xe608;</i> 导入信息
-        </a>
-        <a href="#" class="layui-btn layui-btn-small">
-            <i class="fa fa-shopping-cart" aria-hidden="true"></i> 导出信息
+        <a href="{{ route('goods.create') }}" class="layui-btn layui-btn-small" id="add">
+            <i class="layui-icon">&#xe608;</i> 添加产品
         </a>
         <a href="#" class="layui-btn layui-btn-small" id="getSelected">
-            <i class="fa fa-shopping-cart" aria-hidden="true"></i> 获取全选信息
+            <i class="layui-icon">&#xe640;</i> 删除选中
         </a>
-        <a href="javascript:;" class="layui-btn layui-btn-small" id="search">
+        <a href="javascript:location.reload()" class="layui-btn layui-btn-small">
+            <i class="layui-icon">&#x1002;</i> 刷新
+        </a>
+        <a href="javascript:;" class="layui-btn layui-btn-danger layui-btn-small" id="search">
             <i class="layui-icon">&#xe615;</i> 搜索
         </a>
+    </blockquote>
+    <blockquote class="layui-elem-quote layui-quote-nm">
+        <div class="layui-inline">
+            <label class="layui-form-label" style="width: 35px">名称</label>
+            <div class="layui-input-block" style="margin-left: 70px">
+                <input type="text" id="goodsName" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">价格</label>
+            <div class="layui-input-inline" style="width: 60px;">
+                <input type="text" id="priceMin" placeholder="￥" class="layui-input">
+            </div>
+            &nbsp;-&nbsp;
+            <div class="layui-input-inline" style="width: 60px;">
+                <input type="text" id="priceMax" placeholder="￥" class="layui-input">
+            </div>
+        </div>
+
     </blockquote>
     <fieldset class="layui-elem-field">
         <legend>数据列表</legend>
@@ -48,7 +64,7 @@
             </table>
         </div>
     </fieldset>
-    <div class="admin-table-page">
+    <div class="admin-table-page" style="background-color: #fff;border-top: 1px solid #e2e2e2;">
         <div id="paged" class="page">
         </div>
     </div>
@@ -82,10 +98,8 @@
             <td>@{{ item.price }}</td>
             <td>@{{ item.created_at }}</td>
             <td>
-                <button data-id="@{{ item.id }}" class="layui-btn layui-btn-mini add-images"><i class="layui-icon">&#xe64a;</i> 添加图片</button>
-                <button target="_blank" class="layui-btn layui-btn-normal layui-btn-mini">预览</button>
-                <a href="javascript:;" data-name="@{{ item.name }}" data-opt="edit" class="layui-btn layui-btn-mini">编辑</a>
-                <a href="javascript:;" data-id="1" data-opt="del" class="layui-btn layui-btn-danger layui-btn-mini">删除</a>
+                <a href="javascript:;" data-id="@{{ item.id }}" class="layui-btn layui-btn-normal layui-btn-mini add-images"><i class="layui-icon">&#xe64a;</i> 添加图片</a>
+                <a href="javascript:;" data-id="@{{ item.id }}" class="layui-btn layui-btn-warm layui-btn-mini"><i class="layui-icon">&#xe642;</i> 编辑</a>
             </td>
         </tr>
         @{{# }); }}
@@ -103,16 +117,19 @@
                 layer = layui.layer, //获取当前窗口的layer对象
                 form = layui.form();
 
-            paging.init({
+            var page = paging.init({
                 url: '{{ route("goods.index") }}', //地址
                 elem: '#content', //内容容器
                 params: { //发送到服务端的参数
                 },
                 type: 'GET',
                 tempElem: '#tpl', //模块容器
+                openWait: true,
+
                 pageConfig: { //分页参数配置
                     elem: '#paged', //分页容器
-                    pageSize: 3 //分页大小
+                    pageSize: 6, //分页大小
+                    skip: true
                 },
                 success: function() { //渲染成功的回调
                     //alert('渲染成功');
@@ -121,27 +138,9 @@
                     //alert('获取数据失败')
                 },
                 complate: function() { //完成的回调
-                    //alert('处理完成');
                     //重新渲染复选框
                     form.render('checkbox');
-                    form.on('checkbox(allselector)', function(data) {
-                        var elem = data.elem;
 
-                        $('#content').children('tr').each(function() {
-                            var $that = $(this);
-                            //全选或反选
-                            $that.children('td').eq(0).children('input[type=checkbox]')[0].checked = elem.checked;
-                            form.render('checkbox');
-                        });
-                    });
-
-                    //绑定所有编辑按钮事件
-                    $('#content').children('tr').each(function() {
-                        var $that = $(this);
-                        $that.children('td:last-child').children('a[data-opt=edit]').on('click', function() {
-                            layer.msg($(this).data('name'));
-                        });
-                    });
                 },
             });
             //获取所有选择的列
@@ -159,7 +158,10 @@
             });
 
             $('#search').on('click', function() {
-                parent.layer.alert('你点击了搜索按钮')
+                var goodsName = $('#goodsName').val();
+                var priceMin = $('#priceMin').val();
+                var priceMax = $('#priceMax').val();
+                page.get({goodsName:goodsName, priceMin: priceMin, priceMax: priceMax});
             });
 
             $(document).on('click', '.add-images', function() {

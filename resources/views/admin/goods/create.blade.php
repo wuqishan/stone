@@ -7,6 +7,14 @@
 
 @section('content')
     <div style="margin: 15px;">
+        <blockquote class="layui-elem-quote">
+            <a href="{{ route('goods.index') }}" class="layui-btn layui-btn-small" id="add">
+                <i class="layui-icon">&#xe60a;</i> 商品列表
+            </a>
+            <a href="javascript:location.reload()" class="layui-btn layui-btn-small" id="add">
+                <i class="layui-icon">&#x1002;</i> 刷新
+            </a>
+        </blockquote>
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
             <legend>商品添加</legend>
         </fieldset>
@@ -58,16 +66,6 @@
                     <div class="layui-input-inline">
                         <input type="text" name="price" placeholder="元" lay-verify="price" class="layui-input">
                     </div>
-                </div>
-            </div>
-
-            <div class="layui-upload">
-                <input type="file" name="images[]" value="" id="upload" multiple>
-                <div class="layui-upload-list">
-                    <table class="layui-table">
-                        <thead><tr><th>文件名</th><th>大小(bytes)</th><th>操作</th></tr></thead>
-                        <tbody id="img-list"></tbody>
-                    </table>
                 </div>
             </div>
 

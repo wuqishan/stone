@@ -14,9 +14,12 @@ class GoodsController extends Controller
     {
         if ($request->ajax()) {
 
-            $pageIndex = $request->input('pageIndex', 1);
-            $pageSize = $request->input('pageSize', 10);
-            $this->result = $goodsRepository->page($pageIndex, $pageSize) + $this->result;
+            $data['pageIndex'] = $request->input('pageIndex', 1);
+            $data['pageSize'] = $request->input('pageSize', 10);
+            $data['goodsName'] = $request->input('goodsName');
+            $data['priceMin'] = sprintf("%.2f", (float) $request->input('priceMin'));
+            $data['priceMax'] = sprintf("%.2f", (float) $request->input('priceMax'));
+            $this->result = $goodsRepository->page($data) + $this->result;
 
             return response()->json($this->result);
         }

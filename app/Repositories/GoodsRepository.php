@@ -6,12 +6,35 @@ use App\Model\Goods;
 
 class GoodsRepository extends Repository
 {
-    public function page($pageIndex, $pageSize)
+    public function page($data)
     {
-        $result['list'] = Goods::where([])->offset(($pageIndex - 1) * $pageSize)->limit($pageSize)->get()->toArray();
-        $result['count'] = Goods::where([])->count();
+        $eloquentData = Goods::where([]);
+        $result['list'] = $this->getWhere($eloquentData, $data)
+            ->offset(($data['pageIndex'] - 1) * $data['pageSize'])
+            ->limit($data['pageSize'])->get()->toArray();
+
+        $eloquentCount = Goods::where([]);
+        $result['count'] = $this->getWhere($eloquentCount, $data)->count();
 
         return $result;
+    }
+
+    public function getWhere($eloquent, $data)
+    {
+        if (! empty($data['goodsName'])) {
+            $eloquent->where('name','like','%'.$data['goodsName'].'%');
+        }
+
+        if (
+            $data['priceMin'] > 0 && $data['priceMax'] > 0 ||
+            $data['priceMin'] == 0 && $data['priceMax'] > 0
+        ) {
+            $eloquent->whereBetween('price', [$data['priceMin'], $data['priceMax']]);
+        } else if ($data['priceMin'] > 0 && $data['priceMax'] == 0) {
+            $eloquent->where('price', '>=', $data['priceMin']);
+        }
+
+        return $eloquent;
     }
 
     /**
