@@ -22,6 +22,18 @@
 
 @section('js')
     <script type="text/javascript" src="{{ asset('admin/plugins/layui/layui.js') }}"></script>
+    <script type="text/javascript">
+            layui.use('layer', function() {
+                var $ = layui.jquery;
+                $('.admin-refresh-iframe').click(function(){
+                    $('.layui-tab-content > .layui-tab-item').each(function () {
+                        if ($(this).hasClass('layui-show')) {
+                            $(this).find('iframe').attr('src', $(this).find('iframe').attr('src'));
+                        }
+                    })
+                });
+            });
+    </script>
 @show
 </body>
 </html>

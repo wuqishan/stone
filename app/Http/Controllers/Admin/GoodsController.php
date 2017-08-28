@@ -10,6 +10,13 @@ use App\Repositories\GoodsImageRepository;
 
 class GoodsController extends Controller
 {
+    /**
+     * 显示商品列表
+     *
+     * @param Request $request
+     * @param GoodsRepository $goodsRepository
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
+     */
     public function index(Request $request, GoodsRepository $goodsRepository)
     {
         if ($request->ajax()) {
@@ -25,29 +32,40 @@ class GoodsController extends Controller
         }
 
         return view('admin.goods.index');
-
     }
 
+    /**
+     * 显示创建商品的界面
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function create()
     {
         return view('admin.goods.create');
     }
 
     /**
-     * 添加商品，首先是异步上传零时商品图片，等商品正确添加后再把零时图片转移到正式目录同时修改数据库
+     * 获取商品信息，显示商品更新页面
      *
      * @param Request $request
      * @param GoodsRepository $goodsRepository
-     * @param ImageRepository $imageRepository
-     * @param GoodsImageRepository $goodsImageRepository
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit(Request $request, GoodsRepository $goodsRepository)
+    {
+        $goods = $goodsRepository->getByPk(intval($request->goods_id));
+
+        return view('admin.goods.edit', ['goods' => $goods]);
+    }
+
+    /**
+     * 添加商品
+     *
+     * @param Request $request
+     * @param GoodsRepository $goodsRepository
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(
-        Request $request,
-        GoodsRepository $goodsRepository,
-        ImageRepository $imageRepository,
-        GoodsImageRepository $goodsImageRepository
-    )
+    public function store(Request $request, GoodsRepository $goodsRepository)
     {
         $data = [];
         $data['name'] = strip_tags($request->input('name'));
@@ -58,22 +76,36 @@ class GoodsController extends Controller
         $data['weight'] = sprintf("%.2f", (float) $request->input('weight'));
         $data['price'] = sprintf("%.2f", (float) $request->input('price'));
         $data['introduce'] = strip_tags($request->input('introduce'));
-        $imgIds = $request->input('image_id');
 
-        $goodsId = $goodsRepository->addGoods($data);
-        if ($goodsId > 0) {
-            if (! $goodsImageRepository->addGoodsImagesRelative($goodsId, $imgIds)) {
-                $goodsRepository->destroy($goodsId);
-                $this->result['code'] = 1;
-            } else {
-                // 更新图片位置及数据库
-                $imageRepository->modifyFromTemp($imgIds);
-            }
-        } else {
+        if ($goodsRepository->addGoods($data) <= 0) {
             $this->result['code'] = 1;
         }
 
         return response()->json($this->result);
     }
 
+    public function update(Request $request, GoodsRepository $goodsRepository)
+    {
+        $data = [];
+        $goodsId = intval($request->input('goods_id'));
+        $data['name'] = strip_tags($request->input('name'));
+        $data['show'] = $request->input('show') === 'on' ? 1 : 0;
+        $data['length'] = intval($request->input('length'));
+        $data['width'] = intval($request->input('width'));
+        $data['height'] = intval($request->input('height'));
+        $data['weight'] = sprintf("%.2f", (float) $request->input('weight'));
+        $data['price'] = sprintf("%.2f", (float) $request->input('price'));
+        $data['introduce'] = strip_tags($request->input('introduce'));
+
+        if ($goodsRepository->updateGoods($goodsId, $data) <= 0) {
+            $this->result['code'] = 1;
+        }
+
+        return response()->json($this->result);
+    }
+
+    public function delete(Request $requests)
+    {
+        echo $requests->goods_ids;exit;
+    }
 }

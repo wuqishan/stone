@@ -10,6 +10,9 @@
             <div class="admin-side-full">
                 <i class="fa fa-life-bouy" aria-hidden="true"></i>
             </div>
+            <div class="admin-refresh-iframe">
+                <i class="layui-icon layui-anim" aria-hidden="true">&#x1002;</i>
+            </div>
         </div>
         <ul class="layui-nav admin-header-item">
             <li class="layui-nav-item">

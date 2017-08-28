@@ -15,13 +15,10 @@
         <a href="{{ route('goods.create') }}" class="layui-btn layui-btn-small" id="add">
             <i class="layui-icon">&#xe608;</i> 添加产品
         </a>
-        <a href="#" class="layui-btn layui-btn-small" id="getSelected">
+        <a href="#" class="layui-btn layui-btn-danger layui-btn-small" id="getSelected">
             <i class="layui-icon">&#xe640;</i> 删除选中
         </a>
-        <a href="javascript:location.reload()" class="layui-btn layui-btn-small">
-            <i class="layui-icon">&#x1002;</i> 刷新
-        </a>
-        <a href="javascript:;" class="layui-btn layui-btn-danger layui-btn-small" id="search">
+        <a href="javascript:;" class="layui-btn layui-btn-warm layui-btn-small" id="search">
             <i class="layui-icon">&#xe615;</i> 搜索
         </a>
     </blockquote>
@@ -50,7 +47,7 @@
             <table class="layui-table admin-table">
                 <thead>
                 <tr>
-                    <th style="width: 30px;"><input type="checkbox" lay-filter="allselector" lay-skin="primary"></th>
+                    <th style="width: 30px;"><input type="checkbox" lay-filter="allChoose" lay-skin="primary"></th>
                     <th>名称</th>
                     <th>长/宽/高 (cm)</th>
                     <th>重量 (kg)</th>
@@ -97,9 +94,9 @@
             <td>@{{ item.weight }}</td>
             <td>@{{ item.price }}</td>
             <td>@{{ item.created_at }}</td>
-            <td>
+            <td width="150">
                 <a href="javascript:;" data-id="@{{ item.id }}" class="layui-btn layui-btn-normal layui-btn-mini add-images"><i class="layui-icon">&#xe64a;</i> 添加图片</a>
-                <a href="javascript:;" data-id="@{{ item.id }}" class="layui-btn layui-btn-warm layui-btn-mini"><i class="layui-icon">&#xe642;</i> 编辑</a>
+                <a href="/admin/goods/edit/@{{ item.id }}" class="layui-btn layui-btn-warm layui-btn-mini"><i class="layui-icon">&#xe642;</i> 编辑</a>
             </td>
         </tr>
         @{{# }); }}
@@ -120,41 +117,42 @@
             var page = paging.init({
                 url: '{{ route("goods.index") }}', //地址
                 elem: '#content', //内容容器
-                params: { //发送到服务端的参数
-                },
+                params: {},
                 type: 'GET',
                 tempElem: '#tpl', //模块容器
                 openWait: true,
-
                 pageConfig: { //分页参数配置
                     elem: '#paged', //分页容器
-                    pageSize: 6, //分页大小
+                    pageSize: 3, //分页大小
                     skip: true
                 },
-                success: function() { //渲染成功的回调
-                    //alert('渲染成功');
-                },
-                fail: function(msg) { //获取数据失败的回调
-                    //alert('获取数据失败')
-                },
-                complate: function() { //完成的回调
+                success: function() {},
+                fail: function(msg) {},
+                complate: function() {
                     //重新渲染复选框
                     form.render('checkbox');
-
+                    form.on('checkbox(allChoose)', function(data){
+                        var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+                        child.each(function(index, item){
+                            item.checked = data.elem.checked;
+                        });
+                        form.render('checkbox');
+                    });
                 },
             });
             //获取所有选择的列
             $('#getSelected').on('click', function() {
-                var names = '';
-                $('#content').children('tr').each(function() {
-                    var $that = $(this);
-                    var $cbx = $that.children('td').eq(0).children('input[type=checkbox]')[0].checked;
-                    if($cbx) {
-                        var n = $that.children('td:last-child').children('a[data-opt=edit]').data('name');
-                        names += n + ',';
+                var goodsIds = [];
+                $('#content input[type="checkbox"]').each(function() {
+                    if ($(this).prop('checked')) {
+                        goodsIds.push($(this).val());
                     }
                 });
-                layer.msg('你选择的名称有：' + names);
+                if (goodsIds.length == 0) {
+                    layer.msg('请选择需要删除的商品');
+                } else {
+                    func.delSelectedGoods(goodsIds);
+                }
             });
 
             $('#search').on('click', function() {
@@ -169,7 +167,6 @@
                 var goodsId = $(this).attr('data-id');
                 // 显示商品图片的panel
                 func.showUploadPanel(goodsId);
-
                 layui.upload({
                     elem: '#upload-images',
                     url: "{{ route('admin.image.upload', ['_token' => csrf_token()]) }}&goods_id="+goodsId,

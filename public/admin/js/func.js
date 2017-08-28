@@ -62,7 +62,14 @@ layui.define(['jquery', 'layer'], function(exports) {
         });
     };
 
-
+    Func.prototype.delSelectedGoods = function(goods_ids)
+    {
+        $.get('/admin/goods/delete/'+goods_ids, function(res){
+            if (res.code === 0) {
+                //$('#search').bind('click');
+            }
+        });
+    }
 
     func = new Func();
 });

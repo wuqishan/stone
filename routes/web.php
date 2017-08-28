@@ -28,8 +28,10 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin/'], function () {
 
     Route::get('goods/index', 'GoodsController@index')->name('goods.index');
     Route::get('goods/create', 'GoodsController@create')->name('goods.create');
-
-    Route::post('goods', 'GoodsController@store')->name('goods.store');
+    Route::post('goods/add', 'GoodsController@store')->name('goods.store');
+    Route::get('goods/edit/{goods_id}', 'GoodsController@edit')->name('goods.edit');
+    Route::post('goods/update', 'GoodsController@update')->name('goods.update');
+    Route::get('goods/delete/{goods_ids}', 'GoodsController@delete')->name('goods.delete');
 
 //    Route::resource('goods', 'GoodsController');
 });

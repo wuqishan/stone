@@ -10,6 +10,7 @@ class GoodsRepository extends Repository
     {
         $eloquentData = Goods::where([]);
         $result['list'] = $this->getWhere($eloquentData, $data)
+            ->orderBy('id', 'desc')
             ->offset(($data['pageIndex'] - 1) * $data['pageSize'])
             ->limit($data['pageSize'])->get()->toArray();
 
@@ -48,6 +49,11 @@ class GoodsRepository extends Repository
         return Goods::create($data)->id;
     }
 
+    public function updateGoods($goodsId, $data)
+    {
+        return Goods::where('id', $goodsId)->update($data);
+    }
+
     /**
      * 删除商品
      *
@@ -57,5 +63,10 @@ class GoodsRepository extends Repository
     public function destroy($goodsId)
     {
         return Goods::destroy($goodsId);
+    }
+
+    public function getByPk($id)
+    {
+        return Goods::find($id)->toArray();
     }
 }
