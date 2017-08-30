@@ -39,10 +39,10 @@ layui.config({
             var navData;
             switch (id) {
                 case '1':
-                    navData = '/admin/datas/nav2.json';
+                    navData = 'datas/nav2.json';
                     break;
                 default:
-                    navData = '/admin/datas/nav.json';
+                    navData = 'datas/nav.json';
                     break;
             }
 
