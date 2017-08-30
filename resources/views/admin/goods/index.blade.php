@@ -52,6 +52,7 @@
                     <th>长/宽/高 (cm)</th>
                     <th>重量 (kg)</th>
                     <th>价格 (￥)</th>
+                    <th>显示</th>
                     <th>创建时间</th>
                     <th>操作</th>
                 </tr>
@@ -93,6 +94,9 @@
             <td>@{{ item.length }} / @{{ item.width }} / @{{ item.height }}</td>
             <td>@{{ item.weight }}</td>
             <td>@{{ item.price }}</td>
+            <td width="60">
+                <input type="checkbox" data-id="@{{ item.id }}" @{{# if (item.show == '1') { }} checked @{{# } }} lay-filter="switchShow" lay-skin="switch" lay-text="是|否">
+            </td>
             <td>@{{ item.created_at }}</td>
             <td width="150">
                 <a href="javascript:;" data-id="@{{ item.id }}" class="layui-btn layui-btn-normal layui-btn-mini add-images"><i class="layui-icon">&#xe64a;</i> 添加图片</a>
@@ -138,6 +142,13 @@
                         });
                         form.render('checkbox');
                     });
+                    form.on('switch(switchShow)', function(data){
+                        var goodsId = $(this).attr('data-id');
+                        var ifShow = this.checked ? 1 : 0;
+                        if (func.modifyShow(goodsId, ifShow) === 0) {
+                            layer.msg('状态修改成功');
+                        }
+                    });
                 },
             });
             //获取所有选择的列
@@ -151,7 +162,11 @@
                 if (goodsIds.length == 0) {
                     layer.msg('请选择需要删除的商品');
                 } else {
-                    func.delSelectedGoods(goodsIds);
+                    if (func.delSelectedGoods(goodsIds) === 0) {
+                        layer.msg('商品删除成功', {shift: -1, time: 1000}, function () {
+                            $('#search').click();
+                        });
+                    };
                 }
             });
 

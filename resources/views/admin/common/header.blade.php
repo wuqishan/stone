@@ -14,7 +14,7 @@
                 <i class="layui-icon layui-anim" aria-hidden="true">&#x1002;</i>
             </div>
         </div>
-        <ul class="layui-nav admin-header-item">
+        <ul class="layui-nav admin-header-item" id="menu">
             <li class="layui-nav-item">
                 <a href="javascript:;">清除缓存</a>
             </li>

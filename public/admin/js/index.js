@@ -32,7 +32,7 @@ layui.config({
 	navbar.set({
 		spreadOne: true,
 		elem: '#admin-navbar-side',
-		cached: true,
+		cached: false,
 		data: navs
 		/*cached:true,
 		url: 'datas/nav.json'*/

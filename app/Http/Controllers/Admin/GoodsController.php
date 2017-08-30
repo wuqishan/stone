@@ -104,8 +104,33 @@ class GoodsController extends Controller
         return response()->json($this->result);
     }
 
-    public function delete(Request $requests)
+    public function updateShow(Request $request, GoodsRepository $goodsRepository)
     {
-        echo $requests->goods_ids;exit;
+        $goodsId = intval($request->goods_id);
+        $data['show'] = intval($request->if_show);
+        if ($goodsRepository->updateGoods($goodsId, $data) <= 0) {
+            $this->result['code'] = 1;
+        }
+
+        return response()->json($this->result);
+    }
+
+    public function delete(
+        Request $requests,
+        GoodsRepository $goodsRepository,
+        GoodsImageRepository $goodsImageRepository,
+        ImageRepository $imageRepository
+    )
+    {
+        $goodsIds = array_filter(explode(',', $requests->goods_ids));
+        $imagesIds = $goodsImageRepository->getImagesId($goodsIds);
+
+        $imageRepository->delete($imagesIds);
+        $goodsImageRepository->deleteByGoodsIds($goodsIds);
+        if (! $goodsRepository->destroy($goodsIds)) {
+            $this->result['code'] = 1;
+        }
+
+        return response()->json($this->result);
     }
 }

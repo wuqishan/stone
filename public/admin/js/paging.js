@@ -121,7 +121,9 @@ layui.define(['layer', 'laypage', 'laytpl'], function(exports) {
 					});
 					if(_config.paged) {
 						if(result.count === null || result.count === 0) {
-							throwError('Paging Error:请返回数据总数！');
+                            if(loadIndex !== undefined)
+                                layer.close(loadIndex); //关闭等待层
+							//throwError('Paging Error:请返回数据总数！');
 							return;
 						}
 						var _pageConfig = _config.pageConfig;

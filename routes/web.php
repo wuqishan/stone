@@ -31,6 +31,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin/'], function () {
     Route::post('goods/add', 'GoodsController@store')->name('goods.store');
     Route::get('goods/edit/{goods_id}', 'GoodsController@edit')->name('goods.edit');
     Route::post('goods/update', 'GoodsController@update')->name('goods.update');
+    Route::get('goods/update_show/{goods_id}/{if_show}', 'GoodsController@updateShow')->name('goods.update_show');
     Route::get('goods/delete/{goods_ids}', 'GoodsController@delete')->name('goods.delete');
 
 //    Route::resource('goods', 'GoodsController');

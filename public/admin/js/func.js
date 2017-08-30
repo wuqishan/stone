@@ -64,12 +64,23 @@ layui.define(['jquery', 'layer'], function(exports) {
 
     Func.prototype.delSelectedGoods = function(goods_ids)
     {
+        var result = 0;
         $.get('/admin/goods/delete/'+goods_ids, function(res){
-            if (res.code === 0) {
-                //$('#search').bind('click');
-            }
+            result = res.code;
         });
-    }
 
+        return result;
+    }
+    
+    Func.prototype.modifyShow = function (goods_id, if_show)
+    {
+        var result = 0;
+        $.get('/admin/goods/update_show/'+goods_id+'/'+if_show, function(res){
+            result = res.code;
+        });
+
+        return result;
+    }
+    
     func = new Func();
 });

@@ -31,10 +31,15 @@ var navs = [{
         "title": "商品列表",
         "icon": "&#xe641;",
         "href": "/admin/goods/index"
-    }, {
-        "title": "添加商品",
-        "icon": "&#xe63c;",
-        "href": "/admin/goods/create"
+    }]
+}, {
+    "title": "网站设置",
+    "icon": "fa-cubes",
+    "spread": false,
+    "children": [{
+        "title": "设置信息",
+        "icon": "&#xe641;",
+        "href": "/admin/setting/index"
     }]
 }, {
 	"title": "组件",

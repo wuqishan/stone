@@ -27,14 +27,29 @@ class GoodsImageRepository extends Repository
         return $result;
     }
 
-    public function delete($goodsId, $imageId)
+    public function delete($goodsId, $imageId = 0)
     {
-        return GoodsImages::where(['goods_id' => $goodsId, 'images_id' => $imageId])->delete();
+        $where = ['goods_id' => $goodsId];
+        if ($imageId !== 0) {
+            $where['images_id'] = $imageId;
+        }
+
+        return GoodsImages::where($where)->delete();
+    }
+
+    public function deleteByGoodsIds($goodsIds)
+    {
+        return GoodsImages::whereIn('goods_id', $goodsIds)->delete();
     }
 
     public function getImagesId($goodsId)
     {
-        $images = GoodsImages::where(['goods_id' => $goodsId])->get(['images_id'])->toArray();
+        $images = [];
+        if (is_array($goodsId)) {
+            $images = GoodsImages::whereIn('goods_id', $goodsId)->get(['images_id'])->toArray();
+        } else {
+            $images = GoodsImages::where(['goods_id' => $goodsId])->get(['images_id'])->toArray();
+        }
 
         return array_column($images, 'images_id');
     }

@@ -34,7 +34,14 @@ class ImageRepository extends Repository
      */
     public function delete($id)
     {
-        @unlink(base_path() . '/public/' . Images::find($id)->path);
+        if (is_array($id)) {
+            foreach ($id as $v) {
+                @unlink(base_path() . '/public/' . Images::find($v)->path);
+            }
+        } else {
+            @unlink(base_path() . '/public/' . Images::find($id)->path);
+        }
+
         return Images::destroy($id);
     }
 
