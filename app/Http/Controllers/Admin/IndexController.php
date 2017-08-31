@@ -16,4 +16,9 @@ class IndexController extends Controller
     {
         return view('admin.index.main');
     }
+
+    public function admin()
+    {
+        return view('admin.index.admin');
+    }
 }

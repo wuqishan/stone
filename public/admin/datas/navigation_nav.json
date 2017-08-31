@@ -1,0 +1,10 @@
+[{
+	"title": "导航管理",
+	"icon": "fa-cubes",
+	"spread": true,
+	"children": [{
+		"title": "导航列表",
+		"icon": "&#xe641;",
+		"href": "/admin/navigation"
+	}]
+}]

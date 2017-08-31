@@ -16,10 +16,13 @@
         </div>
         <ul class="layui-nav admin-header-item" id="menu">
             <li class="layui-nav-item">
+                <a href="javascript:;" module-id="2">导航管理</a>
+            </li>
+            <li class="layui-nav-item">
                 <a href="javascript:;" module-id="0">内容管理</a>
             </li>
             <li class="layui-nav-item">
-                <a href="javascript:;" module-id="1">网站管理</a>
+                <a href="javascript:;" module-id="1">网站设置</a>
             </li>
             <li class="layui-nav-item">
                 <a href="javascript:;">清除缓存</a>

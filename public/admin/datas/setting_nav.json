@@ -1,0 +1,10 @@
+[{
+	"title": "用户管理",
+	"icon": "fa-cubes",
+	"spread": true,
+	"children": [{
+		"title": "管理员信息",
+		"icon": "&#xe641;",
+		"href": "/admin/admin"
+	}]
+}]
