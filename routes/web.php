@@ -36,7 +36,9 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin/'], function () {
     Route::get('goods/update_show/{goods_id}/{if_show}', 'GoodsController@updateShow')->name('goods.update_show');
     Route::get('goods/delete/{goods_ids}', 'GoodsController@delete')->name('goods.delete');
 
-    Route::get('navigation', 'NavigationController@index')->name('navigation.index');
+    Route::resource('navigation', 'NavigationController');
+//    Route::get('navigation', 'NavigationController@index')->name('navigation.index');
+//    Route::get('navigation/create', 'NavigationController@create')->name('navigation.create');
 //    Route::resource('goods', 'GoodsController');
 });
 
