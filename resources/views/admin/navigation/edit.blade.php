@@ -20,50 +20,44 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">导航名称</label>
                 <div class="layui-input-block">
-                    <input type="text" name="title" placeholder="请输入导航名称" lay-verify="title" class="layui-input">
+                    <input type="text" name="title" value="{{ $navigation['title'] }}" placeholder="请输入导航名称" lay-verify="title" class="layui-input">
                 </div>
             </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">父级分类</label>
-                <div class="layui-input-block">
-                    <select name="parent_id" lay-filter="parent_id">
-                        <option level="0" value="0">顶级分类</option>
-                        @foreach($navigation as $v)
-                            <option level="{{ $v['level'] }}" value="{{ $v['id'] }}">│{{ $v['html'] }} {{ $v['title'] }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="layui-form-item hide" id="style-icon">
+            @if($navigation['level'] !== 1)
+            <div class="layui-form-item" id="style-icon">
                 <label class="layui-form-label">Icon</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="icon" placeholder="请输入Icon" lay-verify="icon" class="layui-input">
+                    <input type="text" name="icon" value="{{ $navigation['icon'] }}" placeholder="请输入Icon" lay-verify="icon" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">显示icon的class，具体请参考 <a href="http://fontawesome.dashgame.com" target="_blank">http://fontawesome.dashgame.com</a></div>
             </div>
+            @endif
             <div class="layui-form-item">
                 <label class="layui-form-label">显示排序</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="order" placeholder="请输入排序" lay-verify="order" class="layui-input">
+                    <input type="text" name="order" value="{{ $navigation['order'] }}" placeholder="请输入排序" lay-verify="order" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">显示排序等级越小(整数)，排序越靠前</div>
             </div>
-            <div class="layui-form-item hide" pane="" id="style-spread">
+            @if($navigation['level'] === 2)
+            <div class="layui-form-item" pane="" id="style-spread">
                 <label class="layui-form-label">是否展开</label>
                 <div class="layui-input-block">
-                    <input type="checkbox" checked="" name="spread" lay-skin="switch" lay-text="是|否">
+                    <input type="checkbox" @if($navigation['spread'] === 1) checked @endif name="spread" lay-skin="switch" lay-text="是|否">
                 </div>
             </div>
+            @endif
             <div class="layui-form-item">
                 <label class="layui-form-label">链接地址</label>
                 <div class="layui-input-block">
-                    <input type="text" name="href" placeholder="请输入链接地址" lay-verify="icon" class="layui-input">
+                    <input type="text" name="href" value="{{ $navigation['href'] }}" placeholder="请输入链接地址" lay-verify="icon" class="layui-input">
                 </div>
             </div>
             {{ csrf_field() }}
-            <input type="hidden" name="level" id="level" value="1">
+            {{ method_field('put') }}
+            <input type="hidden" name="level" value="{{ $navigation['level'] }}">
             <div class="layui-form-item">
-                <button class="layui-btn" lay-submit lay-filter="addNavigation">提 交</button>
+                <button class="layui-btn" lay-submit lay-filter="updateNavigation">提 交</button>
             </div>
         </form>
     </div>
@@ -83,24 +77,9 @@
                     }
                 }
             });
-            // 监听select
-            form.on('select(parent_id)', function (data) {
-                var level = $(data.elem).find("option:selected").attr('level');
-                $('#level').val(parseInt(level) + 1);
-                if (level === '0') {
-                    $('#style-icon').hide();
-                    $('#style-spread').hide();
-                } else if (level === '1') {
-                    $('#style-icon').show();
-                    $('#style-spread').show();
-                } else {
-                    $('#style-icon').show();
-                    $('#style-spread').hide();
-                }
-            });
             // 监听submit
-            form.on('submit(addNavigation)', function (data) {
-                $.post("{{ route('navigation.store') }}", data.field, function (res) {
+            form.on('submit(updateNavigation)', function (data) {
+                $.post("{{ route('navigation.update', ['navigation' => $navigation['id']]) }}", data.field, function (res) {
                     var msg = '';
                     if (res.code === 0) {
                         msg = '添加成功';

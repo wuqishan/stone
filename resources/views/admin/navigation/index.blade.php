@@ -17,23 +17,58 @@
     </blockquote>
     <div class="layui-tab layui-tab-card" style="width: 100%;">
         <ul class="layui-tab-title">
-            <li class="layui-this">网站设置</li>
-            <li>用户管理</li>
-            <li>权限分配</li>
-            <li>商品管理</li>
-            <li>订单管理</li>
-            <li>订单管理</li>
+            @foreach($parents as $v)
+                <li @if($loop->first) class="layui-this" @endif>{{ $v['title'] }}</li>
+            @endforeach
         </ul>
         <div class="layui-tab-content">
-            <div class="layui-tab-item layui-show">
-                1. 宽度足够，就不会出现右上图标；宽度不够，就会开启展开功能。
-                <br>2. 如果你的宽度是自适应的，Tab会自动判断是否需要展开，并适用于所有风格。
-            </div>
-            <div class="layui-tab-item">2</div>
-            <div class="layui-tab-item">3</div>
-            <div class="layui-tab-item">4</div>
-            <div class="layui-tab-item">5</div>
-            <div class="layui-tab-item">6</div>
+            @foreach($parents as $v)
+                <div class="layui-tab-item @if($loop->first) layui-show @endif">
+                    <div class="layui-form">
+                        <table class="layui-table">
+                            <colgroup>
+                                <col width="50">
+                                <col>
+                                <col width="160">
+                                <col width="60">
+                                <col width="90">
+                                <col width="60">
+                                <col>
+                                <col width="160">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>分类名称</th>
+                                <th>Icon</th>
+                                <th>Level</th>
+                                <th>默认展开</th>
+                                <th>排序</th>
+                                <th>链接地址</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($allNodes[$loop->index] as $node)
+                            <tr>
+                                <td>{{ $node['id'] }}</td>
+                                <td>│{{ $node['html'] }} {{ $node['title'] }}</td>
+                                <td>{{ $node['icon'] }}</td>
+                                <td>{{ $node['level'] }}</td>
+                                <td>@if($node['spread'] === 0) 闭合 @else 展开 @endif</td>
+                                <td>{{ $node['order'] }}</td>
+                                <td>{{ $node['href'] }}</td>
+                                <td>
+                                    <a href="{{ route('navigation.edit', ['navigation' => $node['id']]) }}" class="layui-btn layui-btn-warm layui-btn-mini"><i class="layui-icon">&#xe642;</i> 编辑</a>
+                                    <a href="javascript:;" data-id="{{ $node['id'] }}" class="layui-btn layui-btn-danger layui-btn-mini delete-nav"><i class="layui-icon">&#xe640;</i> 删除</a>
+                                </td>
+                            </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            @endforeach
         </div>
     </div>
 </div>
@@ -46,8 +81,28 @@
             base: '/admin/js/'
         });
         layui.use(['element'], function() {
-            var element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
+            layer = layui.layer,
+                $ = layui.jquery;
 
+            $('.delete-nav').click(function() {
+                var thisNav = $(this);
+                layer.confirm('您确定删除该导航分类？', {btn: ['确定','删除']}, function(index){
+                    $.post("/admin/navigation/"+thisNav.attr('data-id'), {'_method': 'delete', '_token': '{{ csrf_token() }}'}, function (res) {
+                        var msg = '';
+                        if (res.code === 0) {
+                            layer.msg('导航分类删除成功', {time: 1000}, function () {
+                                thisNav.parents('tr').remove();
+                            });
+                        } else {
+                            layer.msg('导航分类删除失败', {time: 1000});
+                        }
+                    });
+                    layer.close(index);
+                });
+
+
+//                alert($(this).attr('data-id'));
+            });
 
         });
     </script>

@@ -4,7 +4,7 @@
 	"spread": true,
 	"children": [{
 		"title": "导航列表",
-		"icon": "&#xe641;",
+		"icon": "fa-navicon",
 		"href": "/admin/navigation"
 	}]
 }]

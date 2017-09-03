@@ -16,5 +16,5 @@ class Navigation extends Model
 
     const UPDATED_AT = 'updated_at';
 
-    protected $fillable = array('parent_id', 'title', 'icon', 'spread', 'href', 'order');
+    protected $fillable = array('parent_id', 'title', 'icon', 'spread', 'href', 'level', 'order');
 }
