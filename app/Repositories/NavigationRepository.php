@@ -14,19 +14,51 @@ class NavigationRepository extends Repository
      */
     public function getSelectNodes($level = [])
     {
-        $navgationObj = null;
+        $navigationObj = null;
         if (empty($level)) {
-            $navgationObj = Navigation::where([]);
+            $navigationObj = Navigation::where([]);
         } else {
-            $navgationObj = Navigation::whereIn('level', $level);
+            $navigationObj = Navigation::whereIn('level', $level);
         }
 
-        $navgation = $navgationObj->orderBy('order', 'asc')
+        $navigation = $navigationObj->orderBy('order', 'asc')
             ->orderBy('id', 'asc')
             ->get()
             ->toArray();
 
-        return $this->unlimitedForLevel($navgation);
+        return $this->unlimitedForLevel($navigation);
+    }
+
+    public function getLeftNavigation($parentId)
+    {
+        $navigation = Navigation::where([])
+            ->orderBy('order', 'asc')
+            ->orderBy('id', 'asc')
+            ->get(['id', 'parent_id', 'title', 'icon', 'spread', 'href'])
+            ->toArray();
+
+        $navigation = $this->array2tree($navigation);
+
+        return $this->formatNavigation($navigation[$parentId]['children']);
+    }
+
+    public function formatNavigation($navigation)
+    {
+        $navigation = array_values($navigation);
+        foreach ($navigation as $key => $nav) {
+            unset($navigation[$key]['id']);
+            unset($navigation[$key]['parent_id']);
+            unset($navigation[$key]['href']);
+            $navigation[$key]['children'] = array_values($nav['children']);
+            foreach ($navigation[$key]['children'] as $k => $v) {
+                unset($navigation[$key]['children'][$k]['id']);
+                unset($navigation[$key]['children'][$k]['parent_id']);
+                unset($navigation[$key]['children'][$k]['spread']);
+                unset($navigation[$key]['children'][$k]['children']);
+            }
+        }
+
+        return $navigation;
     }
 
     /**
@@ -96,15 +128,16 @@ class NavigationRepository extends Repository
      * @param int $pid
      * @return array
      */
-    public function array2tree ($category, $name = 'child', $pid = 0)
+    public function array2tree ($category, $name = 'children', $pid = 0)
     {
         $arr = array();
         foreach ($category as $v) {
             if ($v['parent_id'] == $pid) {
                 $v[$name] = $this->array2tree($category, $name, $v['id']);
-                $arr[] = $v;
+                $arr[$v['id']] = $v;
             }
         }
+
         return $arr;
     }
 }

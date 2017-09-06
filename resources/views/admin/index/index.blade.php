@@ -5,7 +5,7 @@
 @endsection
 @section('content')
     <div class="layui-layout layui-layout-admin" style="border-bottom: solid 5px #1aa094;">
-        @include('admin.common.header')
+        @include('admin.common.header', ['navigation' => $navigation])
         @include('admin.common.left_nav')
 
         <div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">

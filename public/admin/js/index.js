@@ -35,31 +35,16 @@ layui.config({
         $this.on('click', function () {
             //获取设置的模块ID
             var id = $this.find('a').attr('module-id');
-            //这里的数据源只是演示时用的，实际需求可能通过远程读取（根据模块ID来获取对应模块的信息）
-            var navData;
-            switch (id) {
-                case '1':
-                    navData = 'datas/setting_nav.json';
-                    break;
-                case '2':
-                    navData = 'datas/navigation_nav.json';
-                    break;
-                default:
-                    navData = 'datas/content_nav.json';
-                    break;
-            }
-
             //设置navbar
             navbar.set({
                 spreadOne: true,
                 elem: '#admin-navbar-side',
                 cached: false,
-                url: navData
+                url: '/admin/navigation/get_left_navigation/' + id
                 // data: navData
                 /*cached:true,
                  url: 'datas/nav.json'*/
             });
-
             //渲染navbar
             navbar.render();
             //监听点击事件
@@ -68,7 +53,7 @@ layui.config({
             });
         });
     });
-    $('#menu').find('a[module-id=0]').click();
+    $('#menu').find('a:eq(0)').click();
 
     $('.admin-side-toggle').on('click', function () {
         var sideWidth = $('#admin-side').width();

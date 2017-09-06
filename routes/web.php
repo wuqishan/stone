@@ -37,6 +37,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin/'], function () {
     Route::get('goods/delete/{goods_ids}', 'GoodsController@delete')->name('goods.delete');
 
     Route::resource('navigation', 'NavigationController');
+    Route::get('navigation/get_left_navigation/{parent_id}', 'NavigationController@getLeftNavigation')->name('navigation.get_left_navigation');
 //    Route::get('navigation', 'NavigationController@index')->name('navigation.index');
 //    Route::get('navigation/create', 'NavigationController@create')->name('navigation.create');
 //    Route::resource('goods', 'GoodsController');

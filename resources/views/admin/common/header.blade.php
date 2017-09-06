@@ -15,24 +15,11 @@
             </div>
         </div>
         <ul class="layui-nav admin-header-item" id="menu">
+            @foreach($navigation as $v)
             <li class="layui-nav-item">
-                <a href="javascript:;" module-id="2">导航管理</a>
+                <a href="javascript:;" module-id="{{ $v['id'] }}">{{ $v['title'] }}</a>
             </li>
-            <li class="layui-nav-item">
-                <a href="javascript:;" module-id="0">内容管理</a>
-            </li>
-            <li class="layui-nav-item">
-                <a href="javascript:;" module-id="1">网站设置</a>
-            </li>
-            <li class="layui-nav-item">
-                <a href="javascript:;">清除缓存</a>
-            </li>
-            <li class="layui-nav-item">
-                <a href="javascript:;">浏览网站</a>
-            </li>
-            <li class="layui-nav-item" id="video1">
-                <a href="javascript:;">视频</a>
-            </li>
+            @endforeach
             <li class="layui-nav-item">
                 <a href="javascript:;" class="admin-header-user">
                     <img src="{{ asset('admin/images/0.jpg') }}" />

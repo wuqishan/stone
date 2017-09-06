@@ -118,4 +118,12 @@ class NavigationController extends Controller
 
         return response()->json($this->result);
     }
+
+    public function getLeftNavigation(Request $request, NavigationRepository $navigationRepository)
+    {
+        $parentId = intval($request->parent_id);
+        $navigation = $navigationRepository->getLeftNavigation($parentId);
+
+        return response()->json($navigation);
+    }
 }
