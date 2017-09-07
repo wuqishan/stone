@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : LocalTest
-Source Server Version : 50636
-Source Host           : 192.168.0.114:3306
+Source Server         : vagrant
+Source Server Version : 50173
+Source Host           : localhost:3306
 Source Database       : stone
 
 Target Server Type    : MYSQL
-Target Server Version : 50636
+Target Server Version : 50173
 File Encoding         : 65001
 
-Date: 2017-09-03 15:55:49
+Date: 2017-09-07 17:01:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,16 +31,16 @@ CREATE TABLE `navigation` (
   `created_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COMMENT='头部分类为一级分类，左侧为二级分类和三级分类';
+) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COMMENT='头部分类为一级分类，左侧为二级分类和三级分类';
 
 -- ----------------------------
 -- Records of navigation
 -- ----------------------------
-INSERT INTO `navigation` VALUES ('15', '0', '视频', '', '0', '', '1', '1', '2017-09-03 15:52:03', '2017-09-03 15:52:03');
-INSERT INTO `navigation` VALUES ('16', '0', '浏览网站', '', '0', '', '1', '2', '2017-09-03 15:52:20', '2017-09-03 15:52:20');
-INSERT INTO `navigation` VALUES ('17', '0', '清除缓存', '', '0', '', '1', '3', '2017-09-03 15:52:46', '2017-09-03 15:52:46');
-INSERT INTO `navigation` VALUES ('18', '0', '网站设置', '', '0', '', '1', '4', '2017-09-03 15:52:59', '2017-09-03 15:52:59');
+INSERT INTO `navigation` VALUES ('29', '25', '后台权限管理', 'fa-cubes', '1', '', '2', '2', '2017-09-06 17:10:28', '2017-09-06 17:11:43');
 INSERT INTO `navigation` VALUES ('19', '0', '内容管理', '', '0', '', '1', '5', '2017-09-03 15:53:11', '2017-09-03 15:53:11');
-INSERT INTO `navigation` VALUES ('20', '0', '后台开发管理', '', '0', '', '1', '7', '2017-09-03 15:53:58', '2017-09-03 15:53:58');
-INSERT INTO `navigation` VALUES ('21', '20', '导航管理', '', '1', '', '2', '1', '2017-09-03 15:54:23', '2017-09-03 15:54:23');
-INSERT INTO `navigation` VALUES ('22', '21', '导航列表', 'fa-navicon', '0', '', '3', '1', '2017-09-03 15:55:09', '2017-09-03 15:55:09');
+INSERT INTO `navigation` VALUES ('30', '29', '权限列表', 'fa-navicon', '0', '/admin/auth', '3', '1', '2017-09-06 17:12:57', '2017-09-06 17:12:57');
+INSERT INTO `navigation` VALUES ('23', '19', '商品管理', 'fa-cubes', '1', '', '2', '1', '2017-09-06 13:13:37', '2017-09-06 13:13:37');
+INSERT INTO `navigation` VALUES ('24', '23', '商品列表', 'fa-navicon', '0', '/admin/goods/index', '3', '1', '2017-09-06 13:14:46', '2017-09-06 13:19:47');
+INSERT INTO `navigation` VALUES ('25', '0', '后台管理', '', '0', '', '1', '1', '2017-09-06 13:16:25', '2017-09-06 13:16:25');
+INSERT INTO `navigation` VALUES ('26', '25', '导航管理', 'fa-cubes', '1', '', '2', '1', '2017-09-06 13:17:07', '2017-09-06 13:17:07');
+INSERT INTO `navigation` VALUES ('28', '26', '导航列表', 'fa-navicon', '0', '/admin/navigation', '3', '1', '2017-09-06 13:18:53', '2017-09-06 13:18:53');

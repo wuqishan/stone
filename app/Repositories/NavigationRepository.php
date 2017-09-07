@@ -12,7 +12,7 @@ class NavigationRepository extends Repository
      * @param array $level
      * @return array
      */
-    public function getSelectNodes($level = [])
+    public function getSelectNodes($level = [], $type = 1)
     {
         $navigationObj = null;
         if (empty($level)) {
@@ -26,7 +26,7 @@ class NavigationRepository extends Repository
             ->get()
             ->toArray();
 
-        return $this->unlimitedForLevel($navigation);
+        return $type === 1 ? $this->unlimitedForLevel($navigation) : $this->array2tree($navigation);
     }
 
     public function getLeftNavigation($parentId)
