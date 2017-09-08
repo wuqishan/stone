@@ -20,7 +20,6 @@ class GoodsController extends Controller
     public function index(Request $request, GoodsRepository $goodsRepository)
     {
         if ($request->ajax()) {
-
             $data['pageIndex'] = $request->input('pageIndex', 1);
             $data['pageSize'] = $request->input('pageSize', 10);
             $data['goodsName'] = $request->input('goodsName');

@@ -9,8 +9,8 @@
 <div class="admin-main">
 
     <blockquote class="layui-elem-quote">
-        <a href="{{ route('auth.create') }}" class="layui-btn layui-btn-small" id="add">
-            <i class="layui-icon">&#xe608;</i> 添加权限
+        <a href="{{ route('auth_group.create') }}" class="layui-btn layui-btn-small" id="add">
+            <i class="layui-icon">&#xe608;</i> 添加权限组
         </a>
         <a href="#" class="layui-btn layui-btn-danger layui-btn-small" id="getSelected">
             <i class="layui-icon">&#xe640;</i> 删除选中
@@ -38,13 +38,6 @@
                 <div class="layui-input-block">
                     <select id="navigation_id" lay-search>
                         <option value>选择权限所属分类</option>
-                        @foreach($navigation as $nav)
-                            <optgroup label="{{ $nav['title'] }}">
-                                @foreach($nav['children'] as $v)
-                                    <option value="{{ $v['id'] }}">{{ $v['title'] }}</option>
-                                @endforeach
-                            </optgroup>
-                        @endforeach
                     </select>
                 </div>
             </div>
@@ -101,7 +94,7 @@
                 form = layui.form();
 
             var page = paging.init({
-                url: '{{ route("auth.index") }}', //地址
+                url: '{{ route("auth_group.index") }}', //地址
                 elem: '#content', //内容容器
                 params: {},
                 type: 'GET',

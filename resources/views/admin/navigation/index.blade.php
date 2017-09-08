@@ -99,9 +99,6 @@
                     });
                     layer.close(index);
                 });
-
-
-//                alert($(this).attr('data-id'));
             });
 
         });

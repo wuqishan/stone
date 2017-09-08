@@ -2,19 +2,18 @@
 
 namespace App\Repositories;
 
-use App\Model\Auth;
 
-class AuthRepository extends Repository
+class AuthGroupRepository extends Repository
 {
     public function page($data)
     {
-        $eloquentData = Auth::where([]);
+        $eloquentData = Admin::where([]);
         $result['list'] = $this->getWhere($eloquentData, $data)
             ->orderBy('id', 'desc')
             ->offset(($data['pageIndex'] - 1) * $data['pageSize'])
             ->limit($data['pageSize'])->get()->toArray();
 
-        $eloquentCount = Auth::where([]);
+        $eloquentCount = Admin::where([]);
         $result['count'] = $this->getWhere($eloquentCount, $data)->count();
 
         return $result;
@@ -37,23 +36,4 @@ class AuthRepository extends Repository
         return $eloquent;
     }
 
-    public function addAuth($data)
-    {
-        return Auth::create($data)->id;
-    }
-
-    public function delete($authId)
-    {
-        return Auth::destroy($authId);
-    }
-
-    public function getAuth($authId)
-    {
-        return Auth::find($authId)->toArray();
-    }
-
-    public function updateAuth($authId, $data)
-    {
-        return Auth::where(['id' => $authId])->update($data);
-    }
 }

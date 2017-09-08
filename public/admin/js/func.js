@@ -71,7 +71,7 @@ layui.define(['jquery', 'layer'], function(exports) {
 
         return result;
     }
-    
+
     Func.prototype.modifyShow = function (goods_id, if_show)
     {
         var result = 0;

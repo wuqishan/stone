@@ -23,23 +23,24 @@
         </a>
     </blockquote>
     <blockquote class="layui-elem-quote layui-quote-nm">
-        <div class="layui-inline">
-            <label class="layui-form-label" style="width: 35px">名称</label>
-            <div class="layui-input-block" style="margin-left: 70px">
-                <input type="text" id="goodsName" class="layui-input">
+        <form class="layui-form layui-form-pane" action="">
+            <div class="layui-inline">
+                <label class="layui-form-label">名称</label>
+                <div class="layui-input-block">
+                    <input type="text" id="goodsName" class="layui-input">
+                </div>
             </div>
-        </div>
-        <div class="layui-inline">
-            <label class="layui-form-label">价格</label>
-            <div class="layui-input-inline" style="width: 60px;">
-                <input type="text" id="priceMin" placeholder="￥" class="layui-input">
+            <div class="layui-inline">
+                <label class="layui-form-label">价格</label>
+                <div class="layui-input-inline" style="width: 60px;">
+                    <input type="text" id="priceMin" placeholder="￥" class="layui-input">
+                </div>
+                &nbsp;-&nbsp;
+                <div class="layui-input-inline" style="width: 60px;">
+                    <input type="text" id="priceMax" placeholder="￥" class="layui-input">
+                </div>
             </div>
-            &nbsp;-&nbsp;
-            <div class="layui-input-inline" style="width: 60px;">
-                <input type="text" id="priceMax" placeholder="￥" class="layui-input">
-            </div>
-        </div>
-
+        </form>
     </blockquote>
     <fieldset class="layui-elem-field">
         <legend>数据列表</legend>
