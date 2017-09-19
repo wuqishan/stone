@@ -2,18 +2,19 @@
 
 namespace App\Repositories;
 
+use App\Model\Group;
 
-class AuthGroupRepository extends Repository
+class GroupRepository extends Repository
 {
     public function page($data)
     {
-        $eloquentData = Admin::where([]);
+        $eloquentData = Group::where([]);
         $result['list'] = $this->getWhere($eloquentData, $data)
             ->orderBy('id', 'desc')
             ->offset(($data['pageIndex'] - 1) * $data['pageSize'])
             ->limit($data['pageSize'])->get()->toArray();
 
-        $eloquentCount = Admin::where([]);
+        $eloquentCount = Group::where([]);
         $result['count'] = $this->getWhere($eloquentCount, $data)->count();
 
         return $result;
@@ -25,15 +26,15 @@ class AuthGroupRepository extends Repository
             $eloquent->where('title','like','%'.$data['title'].'%');
         }
 
-        if (! empty($data['auth'])) {
-            $eloquent->where('auth','like','%'.$data['auth'].'%');
-        }
-
-        if (! empty($data['navigation_id'])) {
-            $eloquent->where(['navigation_id' => $data['navigation_id']]);
+        if (! empty($data['comments'])) {
+            $eloquent->where('comments','like','%'.$data['comments'].'%');
         }
 
         return $eloquent;
     }
 
+    public function addGroup($data)
+    {
+        return Group::create($data)->id;
+    }
 }

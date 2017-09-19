@@ -37,7 +37,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin/'], function () {
     Route::get('navigation/get_left_navigation/{parent_id}', 'NavigationController@getLeftNavigation')->name('navigation.get_left_navigation');
 
     Route::resource('auth', 'AuthController');
-    Route::resource('auth_group', 'AuthGroupController');
+    Route::resource('group', 'GroupController');
     Route::resource('admin', 'AdminController');
     //    Route::get('navigation', 'NavigationController@index')->name('navigation.index');
 //    Route::get('navigation/create', 'NavigationController@create')->name('navigation.create');

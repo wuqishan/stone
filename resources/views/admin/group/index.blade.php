@@ -9,7 +9,7 @@
 <div class="admin-main">
 
     <blockquote class="layui-elem-quote">
-        <a href="{{ route('auth_group.create') }}" class="layui-btn layui-btn-small" id="add">
+        <a href="{{ route('group.create') }}" class="layui-btn layui-btn-small" id="add">
             <i class="layui-icon">&#xe608;</i> 添加权限组
         </a>
         <a href="#" class="layui-btn layui-btn-danger layui-btn-small" id="getSelected">
@@ -22,23 +22,15 @@
     <blockquote class="layui-elem-quote layui-quote-nm">
         <form class="layui-form layui-form-pane" action="">
             <div class="layui-inline">
-                <label class="layui-form-label">名称</label>
+                <label class="layui-form-label">权限组名称</label>
                 <div class="layui-input-block">
                     <input type="text" id="title" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">权限</label>
+                <label class="layui-form-label">权限组简介</label>
                 <div class="layui-input-block">
-                    <input type="text" id="auth" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">权限导航</label>
-                <div class="layui-input-block">
-                    <select id="navigation_id" lay-search>
-                        <option value>选择权限所属分类</option>
-                    </select>
+                    <input type="text" id="comments" class="layui-input">
                 </div>
             </div>
         </form>
@@ -50,15 +42,12 @@
                 <thead>
                 <tr>
                     <th style="width: 30px;"><input type="checkbox" lay-filter="allChoose" lay-skin="primary"></th>
-                    <th>名称</th>
-                    <th>导航</th>
-                    <th>权限</th>
+                    <th>权限组名称</th>
+                    <th>赋予权限</th>
+                    <th>权限组简介</th>
                     <th width="140">创建时间</th>
-                    <th width="60">操作</th>
-                </tr>
-                </thead>
-                <tbody id="content">
-                </tbody>
+                    <th width="210">操作</th>
+                </tr></thead><tbody id="content"></tbody>
             </table>
         </div>
     </fieldset>
@@ -72,11 +61,13 @@
         <tr>
             <td><input type="checkbox" value="@{{ item.id }}" lay-skin="primary"></td>
             <td>@{{ item.title }}</td>
-            <td>@{{ item.navigation_title }}</td>
-            <td>@{{ item.auth }}</td>
+            <td>111</td>
+            <td>@{{ item.comments }}</td>
             <td>@{{ item.created_at }}</td>
             <td>
-                <a href="/admin/auth/@{{ item.id }}/edit" class="layui-btn layui-btn-warm layui-btn-mini"><i class="layui-icon">&#xe642;</i> 编辑</a>
+                <a href="/admin/group/@{{ item.id }}/edit" class="layui-btn layui-btn-warm layui-btn-mini"><i class="layui-icon">&#xe642;</i> 编辑</a>
+                <a href="javascript:;" data-id="@{{ item.id }}" class="layui-btn layui-btn-normal layui-btn-mini"><i class="layui-icon">&#xe642;</i> 权限编辑</a>
+                <a href="javascript:;" data-id="@{{ item.id }}" class="layui-btn layui-btn-danger layui-btn-mini delete-nav"><i class="layui-icon">&#xe640;</i> 删除</a>
             </td>
         </tr>
         @{{# }); }}
@@ -86,7 +77,7 @@
         layui.config({
             base: '/admin/js/'
         });
-        layui.use(['paging', 'form', 'upload'], function() {
+        layui.use(['paging', 'form'], function() {
             var $ = layui.jquery,
                 paging = layui.paging(),
                 layerTips = parent.layer === undefined ? layui.layer : parent.layer, //获取父窗口的layer对象
@@ -94,7 +85,7 @@
                 form = layui.form();
 
             var page = paging.init({
-                url: '{{ route("auth_group.index") }}', //地址
+                url: '{{ route("group.index") }}', //地址
                 elem: '#content', //内容容器
                 params: {},
                 type: 'GET',
@@ -126,17 +117,17 @@
             });
             //获取所有选择的列
             $('#getSelected').on('click', function() {
-                var authId = [];
+                var groupId = [];
                 $('#content input[type="checkbox"]').each(function() {
                     if ($(this).prop('checked')) {
-                        authId.push($(this).val());
+                        groupId.push($(this).val());
                     }
                 });
                 if (authId.length == 0) {
                     layer.msg('请选择需要删除的权限');
                 } else {
                     layer.confirm('您确定删除该权限？', {btn: ['确定','删除']}, function(index){
-                        $.post("/admin/auth/"+authId.join(','), {'_method': 'delete', '_token': '{{ csrf_token() }}'}, function (res) {
+                        $.post("/admin/group/"+groupId.join(','), {'_method': 'delete', '_token': '{{ csrf_token() }}'}, function (res) {
                             var msg = '';
                             if (res.code === 0) {
                                 layer.msg('权限删除成功', {time: 1000}, function () {
@@ -153,9 +144,8 @@
 
             $('#search').on('click', function() {
                 var title = $('#title').val();
-                var auth = $('#auth').val();
-                var navigationId = $('#navigation_id').val();
-                page.get({title:title, auth: auth, navigationId: navigationId});
+                var comments = $('#comments').val();
+                page.get({title:title, comments: comments});
             });
         });
     </script>

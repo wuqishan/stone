@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50173
 File Encoding         : 65001
 
-Date: 2017-09-07 17:01:04
+Date: 2017-09-08 18:01:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,16 +31,18 @@ CREATE TABLE `navigation` (
   `created_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COMMENT='头部分类为一级分类，左侧为二级分类和三级分类';
+) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 COMMENT='头部分类为一级分类，左侧为二级分类和三级分类';
 
 -- ----------------------------
 -- Records of navigation
 -- ----------------------------
-INSERT INTO `navigation` VALUES ('29', '25', '后台权限管理', 'fa-cubes', '1', '', '2', '2', '2017-09-06 17:10:28', '2017-09-06 17:11:43');
+INSERT INTO `navigation` VALUES ('34', '29', '权限组列表', 'fa-navicon', '0', '/admin/auth_group', '3', '2', '2017-09-08 17:08:57', '2017-09-08 17:53:59');
+INSERT INTO `navigation` VALUES ('29', '25', '权限管理', 'fa-cubes', '0', '', '2', '2', '2017-09-06 17:10:28', '2017-09-08 16:40:42');
 INSERT INTO `navigation` VALUES ('19', '0', '内容管理', '', '0', '', '1', '5', '2017-09-03 15:53:11', '2017-09-03 15:53:11');
 INSERT INTO `navigation` VALUES ('30', '29', '权限列表', 'fa-navicon', '0', '/admin/auth', '3', '1', '2017-09-06 17:12:57', '2017-09-06 17:12:57');
+INSERT INTO `navigation` VALUES ('33', '29', '管理员列表', 'fa-navicon', '0', '/admin/admin', '3', '2', '2017-09-08 16:42:49', '2017-09-08 16:42:49');
 INSERT INTO `navigation` VALUES ('23', '19', '商品管理', 'fa-cubes', '1', '', '2', '1', '2017-09-06 13:13:37', '2017-09-06 13:13:37');
 INSERT INTO `navigation` VALUES ('24', '23', '商品列表', 'fa-navicon', '0', '/admin/goods/index', '3', '1', '2017-09-06 13:14:46', '2017-09-06 13:19:47');
 INSERT INTO `navigation` VALUES ('25', '0', '后台管理', '', '0', '', '1', '1', '2017-09-06 13:16:25', '2017-09-06 13:16:25');
-INSERT INTO `navigation` VALUES ('26', '25', '导航管理', 'fa-cubes', '1', '', '2', '1', '2017-09-06 13:17:07', '2017-09-06 13:17:07');
+INSERT INTO `navigation` VALUES ('26', '25', '导航管理', 'fa-cubes', '0', '', '2', '100', '2017-09-06 13:17:07', '2017-09-08 16:30:37');
 INSERT INTO `navigation` VALUES ('28', '26', '导航列表', 'fa-navicon', '0', '/admin/navigation', '3', '1', '2017-09-06 13:18:53', '2017-09-06 13:18:53');

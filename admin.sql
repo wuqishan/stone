@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50173
 File Encoding         : 65001
 
-Date: 2017-09-08 16:52:46
+Date: 2017-09-08 18:00:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -30,3 +30,7 @@ CREATE TABLE `admin` (
   `created_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of admin
+-- ----------------------------
