@@ -13,7 +13,7 @@
             </a>
         </blockquote>
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-            <legend>导航添加</legend>
+            <legend>导航编辑</legend>
         </fieldset>
 
         <form class="layui-form layui-form-pane" action="">

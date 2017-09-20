@@ -37,4 +37,19 @@ class GroupRepository extends Repository
     {
         return Group::create($data)->id;
     }
+
+    public function getGroup($groupId)
+    {
+        return Group::find($groupId)->toArray();
+    }
+
+    public function updateGroup($groupId, $data)
+    {
+        return Group::where(['id' => $groupId])->update($data);
+    }
+
+    public function delete($groupId)
+    {
+        return Group::destroy($groupId);
+    }
 }

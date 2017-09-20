@@ -38,6 +38,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin/'], function () {
 
     Route::resource('auth', 'AuthController');
     Route::resource('group', 'GroupController');
+    Route::get('group_auth/{group_id}/edit', 'GroupController@editGroupAuth')->name('group_auth.edit');
+    Route::post('group_auth/{group_id}', 'GroupController@updateGroupAuth')->name('group_auth.update');
     Route::resource('admin', 'AdminController');
     //    Route::get('navigation', 'NavigationController@index')->name('navigation.index');
 //    Route::get('navigation/create', 'NavigationController@create')->name('navigation.create');

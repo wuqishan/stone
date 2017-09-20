@@ -46,7 +46,7 @@
                     <th>赋予权限</th>
                     <th>权限组简介</th>
                     <th width="140">创建时间</th>
-                    <th width="210">操作</th>
+                    <th width="150">操作</th>
                 </tr></thead><tbody id="content"></tbody>
             </table>
         </div>
@@ -66,8 +66,7 @@
             <td>@{{ item.created_at }}</td>
             <td>
                 <a href="/admin/group/@{{ item.id }}/edit" class="layui-btn layui-btn-warm layui-btn-mini"><i class="layui-icon">&#xe642;</i> 编辑</a>
-                <a href="javascript:;" data-id="@{{ item.id }}" class="layui-btn layui-btn-normal layui-btn-mini"><i class="layui-icon">&#xe642;</i> 权限编辑</a>
-                <a href="javascript:;" data-id="@{{ item.id }}" class="layui-btn layui-btn-danger layui-btn-mini delete-nav"><i class="layui-icon">&#xe640;</i> 删除</a>
+                <a href="/admin/group_auth/@{{ item.id }}/edit" class="layui-btn layui-btn-normal layui-btn-mini"><i class="layui-icon">&#xe642;</i> 权限编辑</a>
             </td>
         </tr>
         @{{# }); }}
@@ -123,7 +122,7 @@
                         groupId.push($(this).val());
                     }
                 });
-                if (authId.length == 0) {
+                if (groupId.length == 0) {
                     layer.msg('请选择需要删除的权限');
                 } else {
                     layer.confirm('您确定删除该权限？', {btn: ['确定','删除']}, function(index){

@@ -56,4 +56,17 @@ class AuthRepository extends Repository
     {
         return Auth::where(['id' => $authId])->update($data);
     }
+
+    public function getAllAuth()
+    {
+
+        $auth = Auth::where([])
+            ->from('auth')
+            ->leftJoin('navigation', 'auth.navigation_id', '=', 'navigation.id')
+            ->orderBy('auth.navigation_id', 'desc')
+            ->get(['auth.id as aid', 'auth.title as atitle', 'navigation.parent_id as nparent_id', 'navigation.title as ntitle'])
+            ->toArray();
+echo "<pre>";
+        print_r($auth);exit;
+    }
 }
